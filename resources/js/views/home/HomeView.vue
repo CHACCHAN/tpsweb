@@ -115,7 +115,7 @@
                 <div class="navbar-brand text-center text-light fw-bold" v-text="showComponentText" style="width: 150px"></div>
                 <div class="vr mx-3 d-none d-md-block"></div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#NavbarMainMenu" aria-expanded="false" aria-label="Toggle navigation">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-three-dots text-light" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-three-dots text-light border-0" viewBox="0 0 16 16">
                         <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                     </svg>
                 </button>
