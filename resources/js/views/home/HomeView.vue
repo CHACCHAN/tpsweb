@@ -1,5 +1,6 @@
 <script setup>
     import { ref, onMounted } from 'vue'
+    import TopHeader from '../../components/HeaderComponent.vue'
     import WhatTPS from './WhatTPS.vue'
 
     const backVideo = [
@@ -84,13 +85,14 @@
 </script>
 
 <template>
+    <TopHeader />
     <div class="position-relative z-n1" :style="{ opacity: isScrolledOpacity }">
         <video :poster="backVideo[0].videoImage" width="100%" muted loop autoplay playsinline oncontextmenu="return false;">
             <source :src="backVideo[0].videoMp4" type="video/mp4" />
         </video>
         <div class="position-absolute w-100" style="top: 35%;">
             <div class="text-center text-light">
-                <h1 id="TitleText" class="fw-bold">Photo club on TPS</h1>
+                <h1 class="fw-bold" style="font-weight: 40px">Photo club on TPS</h1>
                 <h5>World of Tanks Blitz photo club</h5>
             </div>
         </div>
@@ -108,7 +110,7 @@
     <div class="bg-dark text-light pb-1" style="box-shadow: 0 -8px #212529;">
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <div class="navbar-brand text-light fw-bold" v-text="showComponentText"></div>
+                <div class="navbar-brand text-center text-light fw-bold" v-text="showComponentText" style="width: 150px"></div>
                 <div class="vr mx-3 d-none d-md-block"></div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#NavbarMainMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-three-dots text-light" viewBox="0 0 16 16">
@@ -118,8 +120,8 @@
                 <div class="collapse navbar-collapse" id="NavbarMainMenu">
                     <ul class="navbar-nav">
                         <li class="nav-item" v-for="menuList in menuLists" :key="menuList.id">
-                            <button type="button" @click="changeComponent(menuList)" id="HoverAnimate" class="btn text-light rounded-0 border-0 border-bottom mt-1 me-2" :style="{ 'width': isLoadedWidth }">
-                                <div class="d-flex justify-content-center">
+                            <button type="button" @click="changeComponent(menuList)" id="HoverAnimate" class="btn text-light rounded-0 mt-1 me-2" :style="{ 'width': isLoadedWidth }">
+                                <div class="d-flex align-items-center justify-content-center">
                                     <div v-text="menuList.title"></div>
                                     <div class="ms-1" v-if="showComponentFlag[menuList.id]">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
@@ -137,9 +139,3 @@
     <!-- Component -->
     <WhatTPS class="mt-2" v-if="showComponentFlag[0]" />
 </template>
-
-<style>
-    #TitleText {
-        font-size: 40px;
-    }
-</style>
