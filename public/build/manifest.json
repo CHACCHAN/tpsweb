@@ -4,23 +4,14 @@
       "assets/app-hnoorviK.css"
     ],
     "dynamicImports": [
-      "resources/js/views/home/HomeView.vue",
-      "resources/js/views/home/AboutView.vue"
+      "resources/js/views/home/HomeView.vue"
     ],
-    "file": "assets/app-mxjmt_LM.js",
+    "file": "assets/app-2CMLXZ8S.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
-  "resources/js/views/home/AboutView.vue": {
-    "file": "assets/AboutView-HkgGI5uJ.js",
-    "imports": [
-      "resources/js/app.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/views/home/AboutView.vue"
-  },
   "resources/js/views/home/HomeView.vue": {
-    "file": "assets/HomeView-DsM6iZLJ.js",
+    "file": "assets/HomeView-UsCLRv71.js",
     "imports": [
       "resources/js/app.js"
     ],

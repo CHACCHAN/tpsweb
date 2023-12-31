@@ -1,6 +1,7 @@
 <script setup>
     import { ref, onMounted } from 'vue'
     import TopHeader from '../../components/HeaderComponent.vue'
+    import BottomFooter from '../../components/FooterComponent.vue'
     import WhatTPS from '../../components/home/WhatTPSComponent.vue'
     import PartyImage from '../../components/home/PartyImageComponent.vue'
 
@@ -88,7 +89,9 @@
 </script>
 
 <template>
+    <!-- Header -->
     <TopHeader />
+    
     <div class="position-relative z-n1" :style="{ opacity: isScrolledOpacity }">
         <video :poster="backVideo[0].videoImage" width="100%" muted loop autoplay playsinline oncontextmenu="return false;">
             <source :src="backVideo[0].videoMp4" type="video/mp4" />
@@ -147,4 +150,7 @@
     <!-- Component -->
     <WhatTPS class="mt-2" v-if="showComponentFlag[0]" />
     <PartyImage class="mt-2" v-if="showComponentFlag[1]" />
+
+    <!-- Footer -->
+    <BottomFooter />
 </template>

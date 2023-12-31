@@ -3,6 +3,20 @@
     
     const LatestTankImage = location.href + 'images/home/WhatTPS/LatestTankImage.png'
     const LatestPartyImage = location.href + 'images/home/WhatTPS/LatestPartyImage.png'
+    const IconHistoryImages = [
+        {
+            'title': '初代ロゴ',
+            'ImageIcon': location.href + 'images/home/WhatTPS/FirstIcon.png'
+        },
+        {
+            'title': '2代目ロゴ',
+            'ImageIcon': location.href + 'images/home/WhatTPS/SecondIcon.png'
+        },
+        {
+            'title': '3代目ロゴ',
+            'ImageIcon': location.href + 'images/home/WhatTPS/ThreeIcon.png'
+        }
+    ]
 </script>
 
 <template>
@@ -28,6 +42,34 @@
             <div class="card-body py-1">
                 こちらのホームページに収録されている写真を動画素材等、公で使用する場合は、使用許可をお問い合わせフォームで申請するようお願いします。<br>
                 アイコンや背景などで使用する場合は勝手に使用していただいても結構です。
+            </div>
+        </div>
+
+        <div class="h4 fw-bold border-bottom border-dark border-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cursor-fill" viewBox="0 0 16 16">
+                <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z"/>
+            </svg>   歴史
+        </div>
+        <div class="mb-5">
+            <div class="row">
+                <div class="col-12 col-md-7 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            ss
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="m-0">ロゴの軌跡</h5>
+                            <div v-for="IconHistoryImage in IconHistoryImages" :key="IconHistoryImage">
+                                <img class="border rounded-3 mt-3" :src="IconHistoryImage.ImageIcon" width="100%" alt="">
+                                <h5 class="text-center m-0" v-text="IconHistoryImage.title"></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
