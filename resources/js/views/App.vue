@@ -1,6 +1,6 @@
 <script setup>
     import { ref } from 'vue'
-    import TopHeader from './TopHeader.vue'
+    import TopHeader from '../components/HeaderComponent.vue'
 </script>
 
 <template>

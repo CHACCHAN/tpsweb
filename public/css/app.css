@@ -1,0 +1,16 @@
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Poppins', sans-serif;
+}
+
+body::-webkit-scrollbar{
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    display: none;
+}
+
+#HoverAnimate:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px white;
+}
