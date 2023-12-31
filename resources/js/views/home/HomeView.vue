@@ -36,20 +36,20 @@
 
     const isScrolledOpacity = ref(1)
     const isLoadedWidth = ref()
+    const isTitleSize = ref()
 
     onMounted(() => {
         window.addEventListener('scroll', handleScroll)
-        window.addEventListener('resize', changeUnderbar)
         setFlag()
         changeUnderbar()
+        window.addEventListener('resize', changeUnderbar)
 
         setInterval(() => {
-            document.getElementById('arrowMove')
-            .animate({
+            document.getElementById('arrowMove').animate({
                 top: ["15px", "50px", "15px"],
                 opacity: [0.1, 1, 0.3],
             }, 2000)
-        }, 2000)
+        }, 2000);
     })
 
     const handleScroll = () => {
@@ -67,8 +67,10 @@
     const changeUnderbar = () => {
         if(window.screen.width <= 768) {
             isLoadedWidth.value = '100%'
+            isTitleSize.value = '40px'
         } else {
             isLoadedWidth.value = '140px'
+            isTitleSize.value = '70px'
         }
     }
 
@@ -92,7 +94,7 @@
         </video>
         <div class="position-absolute w-100" style="top: 35%;">
             <div class="text-center text-light">
-                <h1 class="fw-bold" style="font-weight: 40px">Photo club on TPS</h1>
+                <h1 id="Text" class="fw-bold" style="font-weight: 40px;" :style="{ 'font-size': isTitleSize }">Photo club on TPS</h1>
                 <h5>World of Tanks Blitz photo club</h5>
             </div>
         </div>
