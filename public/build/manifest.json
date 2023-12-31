@@ -5,25 +5,25 @@
     ],
     "dynamicImports": [
       "resources/js/views/home/HomeView.vue",
-      "resources/js/views/AboutView.vue"
+      "resources/js/views/home/AboutView.vue"
     ],
-    "file": "assets/app-RIMgccSp.js",
+    "file": "assets/app-Vzy5m3CB.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
-  "resources/js/views/AboutView.vue": {
-    "file": "assets/AboutView-fEDE5zGW.js",
+  "resources/js/views/home/AboutView.vue": {
+    "file": "assets/AboutView-o34TKMKt.js",
     "imports": [
       "resources/js/app.js"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/views/AboutView.vue"
+    "src": "resources/js/views/home/AboutView.vue"
   },
   "resources/js/views/home/HomeView.vue": {
     "css": [
-      "assets/HomeView-tTIT5O9H.css"
+      "assets/HomeView-jF9bkpqx.css"
     ],
-    "file": "assets/HomeView-22Ydh6d_.js",
+    "file": "assets/HomeView-99KyVJo5.js",
     "imports": [
       "resources/js/app.js"
     ],

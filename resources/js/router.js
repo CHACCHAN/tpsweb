@@ -8,10 +8,10 @@ const routes = [
     },
     {
         path: "/about",
-        component: () => import('./views/AboutView.vue'),
+        component: () => import('./views/home/AboutView.vue'),
         name: "about"
     },
-]
+];
 
 const router = createRouter({
     history: createWebHistory('tps-site'),

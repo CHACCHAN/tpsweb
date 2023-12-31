@@ -41,6 +41,14 @@
         window.addEventListener('resize', changeUnderbar)
         setFlag()
         changeUnderbar()
+
+        setInterval(() => {
+            document.getElementById('arrowMove')
+            .animate({
+                top: ["15px", "50px", "15px"],
+                opacity: [0.1, 1, 0.3],
+            }, 2000)
+        }, 2000)
     })
 
     const handleScroll = () => {
@@ -89,7 +97,7 @@
         <div class="position-absolute position-relative w-100" style="top: 60%;">
             <div class="text-center text-light d-none d-md-block">
                 <p>スクロール</p>
-                <div id="arrow-move">
+                <div id="arrowMove" class="position-absolute w-100">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
                     </svg>
@@ -128,32 +136,10 @@
     </div>
     <!-- Component -->
     <WhatTPS class="mt-2" v-if="showComponentFlag[0]" />
-
 </template>
 
 <style>
     #TitleText {
         font-size: 40px;
-    }
-
-    #arrow-move {
-        position: absolute;
-        width: 100%;
-        animation: arrow-move 2s infinite ease-in-out;
-    }
-
-    @keyframes arrow-move {
-        0% {
-            top: 15px;
-            opacity: 0.1;
-        }
-        70% {
-            top: 50px;
-            opacity: 1;
-        }
-        100% {
-            top: 15px;
-            opacity: 0.3;
-        }
     }
 </style>
