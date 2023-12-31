@@ -1,0 +1,1 @@
+import{_ as t,h as o,o as s,c,i as a,w as n,b as r,j as _}from"./app-RIMgccSp.js";const l={},i={class:"mt-5"},d=r("h1",null,"About",-1);function u(m,f){const e=o("router-link");return s(),c("div",i,[d,a(e,{to:"/",class:"mt-5"},{default:n(()=>[_("ホームへ")]),_:1})])}const p=t(l,[["render",u]]);export{p as default};
