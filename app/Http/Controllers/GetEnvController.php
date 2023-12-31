@@ -8,15 +8,15 @@ class GetEnvController extends Controller
 {
     public function getEnvAPI(Request $request)
     {
-        $ResponseDatas = NULL;
+        $ResponseData = NULL;
 
         if($request->set == 'APP_NAME')
         {
-            $ResponseDatas = config('app.name');
+            $ResponseData = config('app.name');
         }
 
         return response()->json([
-            'ResponseDatas' => $ResponseDatas,
+            'ResponseData' => $ResponseData,
         ], 200);
     }
 }

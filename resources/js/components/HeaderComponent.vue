@@ -1,3 +1,33 @@
+<script setup>
+    import { onMounted, ref } from 'vue'
+
+    const isLoadedProjectName = ref()
+
+    onMounted(() => {
+        envAPI()
+    });
+
+    const envAPI = () => {
+        fetch('api/get/env', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                set: 'APP_NAME'
+            }),
+        })
+        .then((response) => response.json())
+        .then(res => {
+            isLoadedProjectName.value = res.ResponseData
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+</script>
+
 <template>
     <div class="position-relative position-fixed w-100 z-3">
         <header class="position-absolute w-100">
@@ -13,7 +43,7 @@
                             </button>
                             <div class="offcanvas offcanvas-start" tabindex="-1" id="OffCanvas" aria-labelledby="OffCanvasLabel">
                                 <div class="offcanvas-header">
-                                    <h5 class="offcanvas-title" id="OffCanvasLabel">TPSSSSS</h5>
+                                    <h5 class="offcanvas-title" id="OffCanvasLabel" v-text="isLoadedProjectName"></h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body">
@@ -23,7 +53,7 @@
                         </div>
 
                         <div class="col d-flex align-items-center justify-content-center">
-                            <router-link to="/" class="text-decoration-none text-light fw-bold h1 m-0">TPSSSSS</router-link>
+                            <router-link to="/" class="text-decoration-none text-light fw-bold h1 m-0">{{ isLoadedProjectName }}</router-link>
                         </div>
 
                         <div class="col d-flex align-items-center justify-content-end">

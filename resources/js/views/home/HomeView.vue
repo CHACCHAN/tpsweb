@@ -41,8 +41,8 @@
     onMounted(() => {
         window.addEventListener('scroll', handleScroll)
         setFlag()
-        changeUnderbar()
-        window.addEventListener('resize', changeUnderbar)
+        changeResponsive()
+        window.addEventListener('resize', changeResponsive)
 
         setInterval(() => {
             document.getElementById('arrowMove').animate({
@@ -64,7 +64,7 @@
             }
         })
     }
-    const changeUnderbar = () => {
+    const changeResponsive = () => {
         if(window.screen.width <= 768) {
             isLoadedWidth.value = '100%'
             isTitleSize.value = '40px'
