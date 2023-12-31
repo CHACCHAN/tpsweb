@@ -15,5 +15,8 @@
         "vite": "^5.0.0",
         "vue": "^3.2.37",
         "vue-router": "^4.2.5"
+    },
+    "dependencies": {
+        "vite-plugin-vuetify": "^2.0.1"
     }
 }
