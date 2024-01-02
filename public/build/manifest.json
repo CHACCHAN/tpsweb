@@ -1,18 +1,37 @@
 {
+  "_UserHelpers-OMSCx4IH.js": {
+    "file": "assets/UserHelpers-OMSCx4IH.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/js/app.js": {
     "css": [
       "assets/app-hnoorviK.css"
     ],
     "dynamicImports": [
-      "resources/js/views/home/HomeView.vue"
+      "resources/js/views/home/HomeView.vue",
+      "resources/js/views/auth/Auth.vue",
+      "resources/js/views/auth/Auth.vue",
+      "resources/js/views/auth/Auth.vue"
     ],
-    "file": "assets/app-2CMLXZ8S.js",
+    "file": "assets/app-2tJGtkd4.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
-  "resources/js/views/home/HomeView.vue": {
-    "file": "assets/HomeView-UsCLRv71.js",
+  "resources/js/views/auth/Auth.vue": {
+    "file": "assets/Auth-MbFsjfFn.js",
     "imports": [
+      "_UserHelpers-OMSCx4IH.js",
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/views/auth/Auth.vue"
+  },
+  "resources/js/views/home/HomeView.vue": {
+    "file": "assets/HomeView-ompgWvnH.js",
+    "imports": [
+      "_UserHelpers-OMSCx4IH.js",
       "resources/js/app.js"
     ],
     "isDynamicEntry": true,

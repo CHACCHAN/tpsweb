@@ -12,6 +12,7 @@
     {{-- 全体設定 --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
 </head>
 <body>
     <div id="app"></div>

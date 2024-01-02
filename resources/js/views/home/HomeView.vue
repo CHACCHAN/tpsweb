@@ -1,9 +1,10 @@
 <script setup>
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, onUnmounted } from 'vue'
     import TopHeader from '../../components/HeaderComponent.vue'
     import BottomFooter from '../../components/FooterComponent.vue'
     import WhatTPS from '../../components/home/WhatTPSComponent.vue'
     import PartyImage from '../../components/home/PartyImageComponent.vue'
+    import TankImage from '../../components/home/TankImageComponent.vue'
 
     const backVideo = [
         {
@@ -39,6 +40,7 @@
     const isScrolledOpacity = ref(1)
     const isLoadedWidth = ref()
     const isTitleSize = ref()
+    const interval = ref()
 
     onMounted(() => {
         window.addEventListener('scroll', handleScroll)
@@ -46,12 +48,19 @@
         changeResponsive()
         window.addEventListener('resize', changeResponsive)
 
-        setInterval(() => {
+        interval.value = setInterval(() => {
             document.getElementById('arrowMove').animate({
                 top: ["15px", "50px", "15px"],
                 opacity: [0.1, 1, 0.3],
             }, 2000)
-        }, 2000);
+        }, 2000)
+    })
+
+    onUnmounted(() => {
+        handleScroll()
+        setFlag()
+        changeResponsive()
+        clearInterval(interval.value)
     })
 
     const handleScroll = () => {
@@ -148,9 +157,12 @@
         </div>
     </div>
     <!-- Component -->
-    <WhatTPS class="mt-2" v-if="showComponentFlag[0]" />
-    <PartyImage class="mt-2" v-if="showComponentFlag[1]" />
-
+    <div class="mt-2">
+        <WhatTPS v-if="showComponentFlag[0]" />
+        <PartyImage v-if="showComponentFlag[1]" />
+        <TankImage v-if="showComponentFlag[2]" />
+    </div>
+    
     <!-- Footer -->
     <BottomFooter />
 </template>

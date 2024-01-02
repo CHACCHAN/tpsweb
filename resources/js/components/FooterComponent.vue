@@ -1,8 +1,13 @@
 <script setup>
     import { onMounted, ref } from 'vue'
+    import UserHelpers from '../functions/UserHelpers';
 
-    const isLoadedProjectName = ref()
+    onMounted(() => {
+        console.log(UserHelpers)
+    })
 
+    const { getAPP_NAME } = UserHelpers()
+    const IconImage = location.href + 'images/components/IconImage.png'
     const FooterTags = [
         {
             'title': 'DISCORD',
@@ -32,31 +37,6 @@
                     `
         }
     ]
-    const IconImage = location.href + 'images/components/IconImage.png'
-
-    onMounted(() => {
-        envAPI()
-    })
-
-    const envAPI = () => {
-        fetch('api/get/env', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                set: 'APP_NAME'
-            }),
-        })
-        .then((response) => response.json())
-        .then(res => {
-            isLoadedProjectName.value = res.ResponseData
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
 </script>
 
 <template>
@@ -67,7 +47,7 @@
                     <div class="my-5">
                         <div class="d-flex align-items-center justify-content-center mb-2">
                             <img class="rounded-circle" :src="IconImage" width="50px" alt="">
-                            <h1 class="m-0 ms-2 fw-bold" v-text="isLoadedProjectName"></h1>
+                            <h1 class="m-0 ms-2 fw-bold" v-text="getAPP_NAME"></h1>
                             <h1>®</h1>
                         </div>
                         <div class="d-flex align-items-center justify-content-center">
