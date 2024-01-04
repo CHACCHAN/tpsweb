@@ -23,6 +23,25 @@ Route::post('/auth/login', [UserController::class, 'login']);
 // ログアウト
 Route::get('/auth/logout', [UserController::class, 'logout']);
 
+// API
+// APP_NAMEの取得
+Route::get('/get/env', function() {
+    return response()->json(['ResponseData' => config('app.name')], 200);
+});
+
+// ログイン状況取得
+Route::get('/auth/login/check', function() {
+    try {
+        if (auth()->check()) {
+            return response()->json(['ResponseData' => true]);  
+        } else {
+            return response()->json(['ResponseData' => false]); 
+        }
+    } catch (\Illuminate\Auth\AuthenticationException $e) {
+        return response()->json(['ResponseData' => false], 401);
+    }
+});
+
 Route::get('/laravel', fn() => view('welcome'));
 
 Route::get('/{any}', function () {

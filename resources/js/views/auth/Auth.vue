@@ -1,10 +1,9 @@
 <script setup>
     import { ref, onMounted } from 'vue'
-    import UserHelpers from '../../functions/UserHelpers';
     import RegisterComponent from '../../components/auth/RegisterComponent.vue';
     import LoginComponent from '../../components/auth/LoginComponent.vue';
     
-    const { getAPP_NAME } = UserHelpers()
+    const APP_NAME = ref()
     const isLoadedWidth = ref()
     const isLoadedHeight = ref()
     const isLoadedBorder = ref()
@@ -12,10 +11,22 @@
     const isSelectedComponentTitle = ref()
 
     onMounted(() => {
+        getAPP_NAME()
         changeResponsive()
         SelectedComponentFlag()
         window.addEventListener('resize', changeResponsive)
     })
+
+    const getAPP_NAME = () => {
+        fetch('/tps-site/get/env')
+        .then((response) => response.json())
+        .then(res => {
+            APP_NAME.value = res.ResponseData
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 
     const changeResponsive = () => {
         if(window.screen.width <= 768) {
@@ -46,8 +57,8 @@
             <div class="card-header border-0">
                 <div class="d-flex align-items-center justify-content-center">
                     <div class="text-center">
-                        <router-link to="/" class="fw-bold fs-1 text-light text-decoration-none">{{ getAPP_NAME }}</router-link>
-                        <h4 v-text="getAPP_NAME + isSelectedComponentTitle"></h4>
+                        <router-link to="/" class="fw-bold fs-1 text-light text-decoration-none">{{ APP_NAME }}</router-link>
+                        <h4 v-text="APP_NAME + isSelectedComponentTitle"></h4>
                     </div>
                 </div>
             </div>

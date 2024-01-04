@@ -1,12 +1,17 @@
 <script setup>
-    import { onMounted, ref } from 'vue'
-    import UserHelpers from '../functions/UserHelpers';
+    import { ref, onMounted } from 'vue'
 
-    onMounted(() => {
-        console.log(UserHelpers)
-    })
-
-    const { getAPP_NAME } = UserHelpers()
+    const APP_NAME = ref()
+    const getAPP_NAME = () => {
+        fetch('/tps-site/get/env')
+        .then((response) => response.json())
+        .then(res => {
+            APP_NAME.value = res.ResponseData
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
     const IconImage = location.href + 'images/components/IconImage.png'
     const FooterTags = [
         {
@@ -37,6 +42,10 @@
                     `
         }
     ]
+
+    onMounted(() => {
+        getAPP_NAME()
+    })
 </script>
 
 <template>
@@ -47,7 +56,7 @@
                     <div class="my-5">
                         <div class="d-flex align-items-center justify-content-center mb-2">
                             <img class="rounded-circle" :src="IconImage" width="50px" alt="">
-                            <h1 class="m-0 ms-2 fw-bold" v-text="getAPP_NAME"></h1>
+                            <h1 class="m-0 ms-2 fw-bold" v-text="APP_NAME"></h1>
                             <h1>®</h1>
                         </div>
                         <div class="d-flex align-items-center justify-content-center">
@@ -92,6 +101,6 @@
         </div>
     </div>
     <div class="container-fluid">
-        <div class="text-center text-secondary" style="font-size: 12px;">Copyright © TPS by CHACCHAN SYSTEM . All Rights Reserved.</div>
+        <div class="text-center text-secondary" style="font-size: 12px;">Copyright © {{ APP_NAME }} by CHACCHAN SYSTEM . All Rights Reserved.</div>
     </div>
 </template>

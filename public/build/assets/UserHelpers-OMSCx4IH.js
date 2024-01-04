@@ -1,1 +1,0 @@
-import{r as s}from"./app-2tJGtkd4.js";function o(){const t=s();return fetch("/tps-site/api/get/env").then(e=>e.json()).then(e=>{t.value=e.ResponseData}).catch(e=>{console.log(e)}),{getAPP_NAME:t}}export{o as U};

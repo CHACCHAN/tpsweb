@@ -1,13 +1,32 @@
 <script setup>
-    import { ref, onMounted  } from 'vue'
-    import UserHelpers from '../functions/UserHelpers.js'
-    import LoginHelpers from '../functions/LoginHelpers.js'
+    import { ref, onMounted } from 'vue'
 
-    const { getAPP_NAME } = UserHelpers()
-    const { getLoginFlag } = LoginHelpers()
+    const APP_NAME = ref()
+    const LoginFlag = ref()
+    const getAPP_NAME = () => {
+        fetch('/tps-site/get/env')
+        .then((response) => response.json())
+        .then(res => {
+            APP_NAME.value = res.ResponseData
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+    const getLoginFlag = () => {
+        fetch('/tps-site/auth/login/check')
+        .then((response) => response.json())
+        .then(res => {
+            LoginFlag.value = res.ResponseData
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 
     onMounted(() => {
-        console.log(getAPP_NAME.value + getLoginFlag.value)
+        getAPP_NAME()
+        getLoginFlag()
     })
 </script>
 
@@ -26,7 +45,7 @@
                             </button>
                             <div class="offcanvas offcanvas-start" tabindex="-1" id="OffCanvas" aria-labelledby="OffCanvasLabel">
                                 <div class="offcanvas-header">
-                                    <h5 class="offcanvas-title" id="OffCanvasLabel" v-text="getAPP_NAME"></h5>
+                                    <h5 class="offcanvas-title" id="OffCanvasLabel" v-text="APP_NAME"></h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body">
@@ -36,7 +55,7 @@
                         </div>
 
                         <div class="col d-flex align-items-center justify-content-center">
-                            <router-link :to="{ name: 'home' }" class="text-decoration-none text-light fw-bold h1 m-0">{{ getAPP_NAME }}</router-link>
+                            <router-link :to="{ name: 'home' }" class="text-decoration-none text-light fw-bold h1 m-0">{{ APP_NAME }}</router-link>
                         </div>
 
                         <div class="col d-flex align-items-center justify-content-end">
@@ -58,8 +77,8 @@
                                 </a>
                             </div>
                             <div class="me-1">
-                                <router-link :to="{ name: 'login' }" class="btn btn-dark border rounded-pill" v-if="!getLoginFlag">ログイン</router-link>
-                                <div class="dropdown" v-if="getLoginFlag">
+                                <router-link :to="{ name: 'login' }" class="btn btn-dark border rounded-pill" v-if="!LoginFlag">ログイン</router-link>
+                                <div class="dropdown" v-if="LoginFlag">
                                     <div class="btn text-light border-0 p-0 me-1" data-bs-toggle="dropdown" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
