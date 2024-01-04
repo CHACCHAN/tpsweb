@@ -13,6 +13,7 @@
     const submitButton = ref(true)
 
     onMounted(() => {
+        document.title = 'ログイン'
         ChangePasswordInput()
     })
 
@@ -86,7 +87,11 @@
     <div class="mt-3">
         <div class="text-center">
             <button type="button" class="btn btn-primary rounded-pill w-100" @click="Login()" :disabled="submitButton">ログイン</button>
-            <button type="button" class="btn text-primary border-0 p-0">メールアドレスまたはパスワードを忘れた方</button>
+            <div class="d-flex align-items-center justify-content-center mt-1">
+                <button type="button" class="btn text-primary border-0 p-0">メールアドレスまたはパスワードを忘れた方</button>
+                <div class="vr mx-2 my-1"></div>
+                <a href="/tps-site/auth/register" class="btn text-light border-0 p-0">新規登録</a>
+            </div>
         </div>
     </div>
 </template>

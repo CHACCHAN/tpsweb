@@ -17,6 +17,7 @@
     const isInputedEmailCheck = ref(false)
 
     onMounted(() => {
+        document.title = '新規登録'
         ChangePasswordInput()
     })
 

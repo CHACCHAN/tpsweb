@@ -43,6 +43,7 @@
     const interval = ref()
 
     onMounted(() => {
+        document.title = 'ホーム'
         window.addEventListener('scroll', handleScroll)
         setFlag()
         changeResponsive()

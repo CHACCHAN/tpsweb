@@ -23,6 +23,7 @@
     const isLoading = ref(false)
 
     onMounted(() => {
+        document.title = 'メール確認'
         document.getElementById('InputToken').addEventListener('input', () => { CheckFlag.value = false })
     })
     
