@@ -64,7 +64,6 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
             $check = true;
         }
         else
@@ -74,6 +73,7 @@ class UserController extends Controller
 
         return response()->json([
             'check' => $check,
+            'csrf' => $request->session()->token()
         ], 200);
     }
 

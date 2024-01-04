@@ -85,7 +85,7 @@
                                         </svg>
                                     </div>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="auth/logout">ログアウト</a></li>
+                                        <li><a href="auth/logout" class="dropdown-item">ログアウト</a></li>
                                     </ul>
                                 </div>
                             </div>

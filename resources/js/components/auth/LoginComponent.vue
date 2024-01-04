@@ -55,6 +55,7 @@
         })
         .then((response) => response.json())
         .then(res => {
+            document.querySelector('meta[name="csrf-token"]').content = res.csrf
             if(res.check) {
                 router.push({ name: 'home' })
             } else {
