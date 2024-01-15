@@ -15,6 +15,11 @@
     onMounted(() => {
         document.title = 'ログイン'
         ChangePasswordInput()
+        document.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter' && !submitButton.value) {
+                Login()
+            }
+        })
     })
 
     onUpdated(() => {
@@ -82,16 +87,22 @@
         <label for="Password" class="form-label m-0">パスワード</label>
         <input type="password" id="Password" class="form-control text-bg-dark border-secondary" v-model="isInputedPassword">
         <div class="form-text text-danger text-start" v-show="isCheckedForm">メールアドレスまたはパスワードが不明です</div>
-        <button type="button" class="form-text text-secondary btn btn-dark p-1 border-0" @click="ChangePasswordInput()" v-text="isClickedText"></button>
+        <button type="button" id="clickItem" class="form-text text-secondary btn p-1 border-0" @click="ChangePasswordInput()" v-text="isClickedText"></button>
     </div>
     <div class="mt-3">
         <div class="text-center">
             <button type="button" class="btn btn-primary rounded-pill w-100" @click="Login()" :disabled="submitButton">ログイン</button>
             <div class="d-flex align-items-center justify-content-center mt-1">
-                <button type="button" class="btn text-primary border-0 p-0">メールアドレスまたはパスワードを忘れた方</button>
+                <button type="button" class="btn text-primary text-truncate border-0 p-0">登録情報を忘れた方</button>
                 <div class="vr mx-2 my-1"></div>
-                <a href="/tps-site/auth/register" class="btn text-light border-0 p-0">新規登録</a>
+                <a href="/tps-site/auth/register" class="btn text-light text-truncate border-0 p-0">新規登録</a>
             </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+#clickItem:hover {
+    background: #3d3d3d;
+}
+</style>

@@ -1,98 +1,182 @@
 <script setup>
     import { ref, onMounted } from 'vue'
 
-    const APP_NAME = ref()
-    const LoginFlag = ref()
-    const getAPP_NAME = () => {
-        fetch('/tps-site/get/env')
-        .then((response) => response.json())
-        .then(res => {
-            APP_NAME.value = res.ResponseData
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
-    const getLoginFlag = () => {
-        fetch('/tps-site/auth/login/check')
-        .then((response) => response.json())
-        .then(res => {
-            LoginFlag.value = res.ResponseData
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
+    const props = defineProps({
+        APP_NAME: String,
+        LoginFlag: Boolean,
+        Adminstrator: Boolean,
+        IconImage: String,
+    })
+    const isBackGradient = ref(false)
+    const isBorderBottom = ref(false)
+    const isPositionLeft = ref(0)
+    const isD_none = ref(true)
 
     onMounted(() => {
-        getAPP_NAME()
-        getLoginFlag()
+        window.addEventListener('scroll', () => {
+            if(window.scrollY > 0) {
+                isBackGradient.value = true
+                isBorderBottom.value = true
+            } else {
+                isBackGradient.value = false
+                isBorderBottom.value = false
+            }
+        })
+
+        document.addEventListener('click', (e) => {
+            if(!e.target.closest('#menuItem') && !e.target.closest('#listMenu')) {
+                isD_none.value = true
+            } else {
+                isPositionLeft.value = (e.pageX - 70) + 'px'
+                isD_none.value = false
+            }
+        })
     })
 </script>
 
 <template>
-    <div class="position-relative position-fixed w-100 z-3">
-        <header class="position-absolute w-100">
-            <div class="container-fluid p-0">
-                <div class="bg-dark m-2 p-1 rounded-pill text-light" style="box-shadow: 0 0 15px black;">
+    <div>
+        <div class="position-relative position-fixed w-100 z-3">
+            <header class="position-absolute w-100">
+                <div class="container-fluid text-light border-2 py-2" :class="{ 'colorBackGradient': isBackGradient, 'border-bottom': isBorderBottom, 'border-secondary': isBorderBottom }">
                     <div class="row">
-                        <div class="col d-flex align-items-center justify-content-start">
-                            <button class="btn border-0 p-0 ms-2 text-light d-flex align-items-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#OffCanvas">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                        <div class="col-6 col-md-10 d-flex align-items-center justify-content-start">
+                            <button type="button" id="clickItem" class="p-2 border-0 rounded-circle" data-bs-toggle="offcanvas" data-bs-target="#SideCanvas" aria-controls="SideCanvas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
                                 </svg>
-                                <div class="h5 m-0 d-none d-sm-block">MENU</div>
                             </button>
-                            <div class="offcanvas offcanvas-start" tabindex="-1" id="OffCanvas" aria-labelledby="OffCanvasLabel">
-                                <div class="offcanvas-header">
-                                    <h5 class="offcanvas-title" id="OffCanvasLabel" v-text="APP_NAME"></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="SideCanvas" aria-labelledby="SideCanvasLabel" style="width: 300px;">
+                                <div class="offcanvas-header justify-content-start p-2">
+                                    <button type="button" id="clickItem" class="p-2 border-0 rounded-circle" data-bs-dismiss="offcanvas" aria-label="Close">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                                        </svg>
+                                    </button>
+                                    <div class="offcanvas-title" id="SideCanvasLabel">
+                                        <router-link :to="{ name: 'home' }" class="d-flex align-items-center text-decoration-none text-light ms-2">
+                                            <img class="rounded-circle" :src="IconImage" width="30px" height="30px" alt="">
+                                            <div class="fs-3 fw-bold ms-1" v-text="APP_NAME"></div>
+                                        </router-link>
+                                    </div>
                                 </div>
                                 <div class="offcanvas-body">
-                                    おaaaa
+
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col d-flex align-items-center justify-content-center">
-                            <router-link :to="{ name: 'home' }" class="text-decoration-none text-light fw-bold h1 m-0">{{ APP_NAME }}</router-link>
-                        </div>
-
-                        <div class="col d-flex align-items-center justify-content-end">
-                            <div class="d-none d-sm-block border-end border-secondary me-2">
-                                <a href="http://twitter.com/share?text=tps-photo-stidio-in-wotb%20%E3%83%9A%E3%83%BC%E3%82%B8%EF%BC%81&url=https%3A%2F%2Ftps-photo-stidio-in-wotb.jimdofree.com%2F" class="text-light me-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
-                                        <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
-                                    </svg>
-                                </a>
-                                <a href="http://line.me/R/msg/text/?tps-photo-stidio-in-wotb%20%E3%83%9A%E3%83%BC%E3%82%B8%EF%BC%81%0Ahttps://tps-photo-stidio-in-wotb.jimdofree.com/" class="text-light me-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-line" viewBox="0 0 16 16">
-                                        <path d="M8 0c4.411 0 8 2.912 8 6.492 0 1.433-.555 2.723-1.715 3.994-1.678 1.932-5.431 4.285-6.285 4.645-.83.35-.734-.197-.696-.413l.003-.018.114-.685c.027-.204.055-.521-.026-.723-.09-.223-.444-.339-.704-.395C2.846 12.39 0 9.701 0 6.492 0 2.912 3.59 0 8 0ZM5.022 7.686H3.497V4.918a.156.156 0 0 0-.155-.156H2.78a.156.156 0 0 0-.156.156v3.486c0 .041.017.08.044.107v.001l.002.002.002.002a.154.154 0 0 0 .108.043h2.242c.086 0 .155-.07.155-.156v-.56a.156.156 0 0 0-.155-.157Zm.791-2.924a.156.156 0 0 0-.156.156v3.486c0 .086.07.155.156.155h.562c.086 0 .155-.07.155-.155V4.918a.156.156 0 0 0-.155-.156h-.562Zm3.863 0a.156.156 0 0 0-.156.156v2.07L7.923 4.832a.17.17 0 0 0-.013-.015v-.001a.139.139 0 0 0-.01-.01l-.003-.003a.092.092 0 0 0-.011-.009h-.001L7.88 4.79l-.003-.002a.029.029 0 0 0-.005-.003l-.008-.005h-.002l-.003-.002-.01-.004-.004-.002a.093.093 0 0 0-.01-.003h-.002l-.003-.001-.009-.002h-.006l-.003-.001h-.004l-.002-.001h-.574a.156.156 0 0 0-.156.155v3.486c0 .086.07.155.156.155h.56c.087 0 .157-.07.157-.155v-2.07l1.6 2.16a.154.154 0 0 0 .039.038l.001.001.01.006.004.002a.066.066 0 0 0 .008.004l.007.003.005.002a.168.168 0 0 0 .01.003h.003a.155.155 0 0 0 .04.006h.56c.087 0 .157-.07.157-.155V4.918a.156.156 0 0 0-.156-.156h-.561Zm3.815.717v-.56a.156.156 0 0 0-.155-.157h-2.242a.155.155 0 0 0-.108.044h-.001l-.001.002-.002.003a.155.155 0 0 0-.044.107v3.486c0 .041.017.08.044.107l.002.003.002.002a.155.155 0 0 0 .108.043h2.242c.086 0 .155-.07.155-.156v-.56a.156.156 0 0 0-.155-.157H11.81v-.589h1.525c.086 0 .155-.07.155-.156v-.56a.156.156 0 0 0-.155-.157H11.81v-.589h1.525c.086 0 .155-.07.155-.156Z"/>
-                                    </svg>
-                                </a>
-                                <a href="http://www.facebook.com/sharer.php?u=https://tps-photo-stidio-in-wotb.jimdofree.com/&t=tps-photo-stidio-in-wotb%20%E3%83%9A%E3%83%BC%E3%82%B8%EF%BC%81" class="text-light me-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
-                                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
-                                    </svg>
-                                </a>
+                            <router-link :to="{ name: 'home' }" class="d-flex align-items-center text-decoration-none text-light ms-2">
+                                <img class="rounded-circle" :src="IconImage" width="30px" height="30px" alt="">
+                                <div class="fs-3 fw-bold ms-1" v-text="APP_NAME"></div>
+                            </router-link>
+                            <div id="menuItem" class="d-none d-md-block ms-5">
+                                <button type="button" id="clickItem" class="btn border-0 rounded-pill ms-2" :class="{ 'clicked': !isD_none }">ホーム</button>
                             </div>
-                            <div class="me-1">
-                                <router-link :to="{ name: 'login' }" class="btn btn-dark border rounded-pill" v-if="!LoginFlag">ログイン</router-link>
-                                <div class="dropdown" v-if="LoginFlag">
-                                    <div class="btn text-light border-0 p-0 me-1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                                        </svg>
+                        </div>
+                        <div class="col-6 col-md-2 d-flex align-items-center justify-content-end">
+                            <router-link :to="{ name: 'login' }" class="btn btn-light rounded-pill" :class="{ 'btn-dark': !isBackGradient }" v-if="!LoginFlag">ログイン</router-link>
+                            <!-- 管理者のみ表示 -->
+                            <router-link :to="{ name: 'admin' }" id="clickItem" class="btn text-light border-0 rounded-circle p-2 me-1" :class="{ 'btn-dark': !isBackGradient }" v-if="Adminstrator">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
+                                    <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z"/>
+                                </svg>
+                            </router-link>
+                            <!-- アカウント -->
+                            <div class="dropdown" v-if="LoginFlag">
+                                <button type="button" id="clickItem" class="btn text-light border-0 rounded-circle p-2 me-1" :class="{ 'btn-dark': !isBackGradient }" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                    </svg>
+                                </button>
+                                <ul class="dropdown-menu text-bg-dark p-0">
+                                    <li class="dropdown-item bg-dark py-2">
+                                        
+                                        <a href="/tps-site/auth/logout" id="clickItem" class="btn border-0 text-light rounded-pill p-1 w-100">ログアウト</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+
+            <!-- PC用　上部メニュー -->
+            <div class="position-fixed w-100" :class="{ 'd-none': isD_none }" style="top: 65px; left: 0;">
+                <div class="position-relative">
+                    <div class="position-absolute w-100 d-flex align-items-center justify-content-center">
+                        <div id="listMenu" class="bg-dark p-2 rounded-3 shadow-lg" style="width: 65%;">
+                            <div class="row">
+                                <!-- トップメニュー -->
+                                <div class="col-3 text-light border-end border-secondary">
+                                    <div class="rounded-3 p-3">
+                                        <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4">TPS Portal</div>
+                                        <router-link to="" id="clickItem" class="btn border-0 text-primary text-decoration-none rounded-pill">ホーム</router-link>
                                     </div>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="auth/logout" class="dropdown-item">ログアウト</a></li>
-                                    </ul>
+                                </div>
+                                <!-- リストメニュー -->
+                                <div class="col-3">
+                                    <div class="rounded-3 p-3 bg-light">
+                                        <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4">基本メニュー</div>
+                                        <router-link to="" class="btn btn-primary rounded-pill">ホーム</router-link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
+            <!-- モバイル用 下部メニュー -->
+            <div class="position-fixed bottom-0 d-block d-md-none w-100">
+                <div class="position-relative w-100">
+                    <div class="bg-dark text-light rounded-pill m-2 p-2 px-4">
+                        <div class="mx-4">
+                            <button type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                                    <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
+                                </svg>
+                                <div style="font-size:8px;">HOME</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
+
+<style scoped>
+.clicked {
+    background: #3d3d3d;
+}
+#clickItem:hover {
+    background: #3d3d3d;
+}
+#clickMenuItem:hover {
+    background: #3d3d3d;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px white;
+}
+#listMenu {
+    transition: 1s;
+}
+#listMenu:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+}
+.colorBackGradient { 
+    background: linear-gradient(-45deg, #000000, #2e2e2e, #53534f) fixed;
+    background-size: 800% 800%;
+    animation: gradietionAnimation 4s ease infinite;
+}
+@keyframes gradietionAnimation { 
+    0%{
+        background-position:0% 50%
+    }
+    50%{
+        background-position:100% 50%
+    }
+    100%{
+        background-position:0% 50%
+    }
+}
+</style>

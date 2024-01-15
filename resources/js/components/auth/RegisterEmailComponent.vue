@@ -12,12 +12,6 @@
         InputPassword: String,
         Token: Number,
     })
-    const InputFirstName = ref(props.InputFirstName)
-    const InputLastName = ref(props.InputLastName)
-    const InputNickName = ref(props.InputNickName)
-    const InputEmail = ref(props.InputEmail)
-    const InputPassword = ref(props.InputPassword)
-    const Token = ref(props.Token)
     const InputToken = ref()
     const CheckFlag = ref(false)
     const isLoading = ref(false)
@@ -25,6 +19,11 @@
     onMounted(() => {
         document.title = 'メール確認'
         document.getElementById('InputToken').addEventListener('input', () => { CheckFlag.value = false })
+        document.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') {
+                CheckToken()
+            }
+        })
     })
     
     function CheckToken() {
@@ -37,13 +36,13 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                'Token': Token.value,
+                'Token': props.Token,
                 'InputToken': InputToken.value,
-                'first_name': InputFirstName.value,
-                'last_name':InputLastName.value,
-                'name': InputNickName.value,
-                'email': InputEmail.value,
-                'password': InputPassword.value
+                'first_name': props.InputFirstName,
+                'last_name': props.InputLastName,
+                'name': props.InputNickName,
+                'email': props.InputEmail,
+                'password': props.InputPassword
             }),
         })
         .then((response) => response.json())
@@ -74,7 +73,7 @@
         <hr>
         <h2>認証コード</h2>
         <input type="number" id="InputToken" class="form-control border-success border-3" v-model="InputToken" placeholder="認証コードを入力してください">
-        <div class="form-text text-danger text-start" v-show="CheckFlag">認証コードが間違っています</div>
+        <div class="form-text text-danger text-start" v-show="CheckFlag">認証コードが不正です</div>
     </div>
     <div class="text-end mt-5">
         <button type="button" class="btn btn-primary" @click="CheckToken()">確認する</button>

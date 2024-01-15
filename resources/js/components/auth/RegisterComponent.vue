@@ -19,6 +19,11 @@
     onMounted(() => {
         document.title = '新規登録'
         ChangePasswordInput()
+        document.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter' && !submitButton.value) {
+                NextRegister()
+            }
+        })
     })
 
     onUpdated(() => {
@@ -101,7 +106,7 @@
         <div class="mb-3">
             <label for="Password" class="form-label m-0">パスワード</label>
             <input type="password" id="Password" class="form-control text-bg-dark border-secondary" v-model="isInputedPassword">
-            <button type="button" class="form-text text-secondary btn btn-dark p-1 border-0" @click="ChangePasswordInput()" v-text="isClickedText"></button>
+            <button type="button" id="clickItem" class="form-text text-secondary btn p-1 border-0" @click="ChangePasswordInput()" v-text="isClickedText"></button>
         </div>
         <div class="text-center mt-3 mx-2">
             <div class="row">
@@ -117,3 +122,9 @@
     <!-- Email Check -->
     <RegisterEmailComponentVue v-if="!isCheckedForm" :InputFirstName="isInputedFirstName" :InputLastName="isInputedLastName" :InputNickName="isInputedNickName" :InputEmail="isInputedEmail" :InputPassword="isInputedPassword" :Token="isOutputedRand"/>
 </template>
+
+<style scoped>
+#clickItem:hover {
+    background: #3d3d3d;
+}
+</style>

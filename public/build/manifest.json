@@ -1,4 +1,10 @@
 {
+  "_LoadingComponent-r72viG6O.js": {
+    "file": "assets/LoadingComponent-r72viG6O.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/js/app.js": {
     "css": [
       "assets/app-hnoorviK.css"
@@ -7,22 +13,43 @@
       "resources/js/views/home/HomeView.vue",
       "resources/js/views/auth/Auth.vue",
       "resources/js/views/auth/Auth.vue",
-      "resources/js/views/auth/Auth.vue"
+      "resources/js/views/auth/Auth.vue",
+      "resources/js/views/admin/AdminView.vue",
+      "resources/js/views/home/HomeView.vue"
     ],
-    "file": "assets/app-Qku3DMev.js",
+    "file": "assets/app-Zi75nPuE.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
-  "resources/js/views/auth/Auth.vue": {
-    "file": "assets/Auth-_TROxKZG.js",
+  "resources/js/views/admin/AdminView.vue": {
+    "css": [
+      "assets/AdminView-MrhehRGm.css"
+    ],
+    "file": "assets/AdminView-0uvDMwZd.js",
     "imports": [
-      "resources/js/app.js"
+      "resources/js/app.js",
+      "_LoadingComponent-r72viG6O.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/views/admin/AdminView.vue"
+  },
+  "resources/js/views/auth/Auth.vue": {
+    "css": [
+      "assets/Auth-NRCXcD4j.css"
+    ],
+    "file": "assets/Auth-BmmS9hC0.js",
+    "imports": [
+      "resources/js/app.js",
+      "_LoadingComponent-r72viG6O.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/views/auth/Auth.vue"
   },
   "resources/js/views/home/HomeView.vue": {
-    "file": "assets/HomeView-Li4SB8YN.js",
+    "css": [
+      "assets/HomeView-eT17JFyA.css"
+    ],
+    "file": "assets/HomeView-6_pU0KEy.js",
     "imports": [
       "resources/js/app.js"
     ],

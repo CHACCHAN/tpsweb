@@ -33,12 +33,23 @@ Route::get('/get/env', function() {
 Route::get('/auth/login/check', function() {
     try {
         if (auth()->check()) {
-            return response()->json(['ResponseData' => true]);  
+            return response()->json([
+                'ResponseData' => true,
+                'Adminstrator' => auth()->user()->administrator,
+                'UserData'     => auth()->user(),
+            ]);
         } else {
-            return response()->json(['ResponseData' => false]); 
+            return response()->json([
+                'ResponseData' => false,
+                'Adminstrator' => false,
+                'UserData'     => false,
+            ]); 
         }
     } catch (\Illuminate\Auth\AuthenticationException $e) {
-        return response()->json(['ResponseData' => false], 401);
+        return response()->json([
+            'ResponseData' => false,
+            'Adminstrator' => false
+        ], 401);
     }
 });
 

@@ -1,18 +1,12 @@
 <script setup>
     import { ref, onMounted } from 'vue'
 
-    const APP_NAME = ref()
-    const getAPP_NAME = () => {
-        fetch('/tps-site/get/env')
-        .then((response) => response.json())
-        .then(res => {
-            APP_NAME.value = res.ResponseData
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
-    const IconImage = location.href + 'images/components/IconImage.png'
+    const props = defineProps({
+        APP_NAME: String,
+        LoginFlag: Boolean,
+        Adminstrator: Boolean,
+        IconImage: String,
+    })
     const FooterTags = [
         {
             'title': 'DISCORD',
@@ -42,10 +36,6 @@
                     `
         }
     ]
-
-    onMounted(() => {
-        getAPP_NAME()
-    })
 </script>
 
 <template>

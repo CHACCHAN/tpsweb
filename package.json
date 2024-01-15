@@ -17,6 +17,8 @@
         "vue-router": "^4.2.5"
     },
     "dependencies": {
-        "vite-plugin-vuetify": "^2.0.1"
+        "chart.js": "^3.9.1",
+        "vite-plugin-vuetify": "^2.0.1",
+        "vue-chart-3": "^3.1.8"
     }
 }

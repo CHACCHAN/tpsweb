@@ -1,21 +1,43 @@
 <script setup>
     import { ref, onMounted } from 'vue'
-    import RegisterComponent from '../../components/auth/RegisterComponent.vue';
-    import LoginComponent from '../../components/auth/LoginComponent.vue';
+    import { useRouter } from 'vue-router'
+    import RegisterComponent from '../../components/auth/RegisterComponent.vue'
+    import LoginComponent from '../../components/auth/LoginComponent.vue'
+    import LoadingComponent from '../../components/loadingcomponent.vue'
     
-    const APP_NAME = ref()
+    const router = useRouter()
+    const isView = ref(false)
+    const APP_NAME = ref('')
     const isLoadedWidth = ref()
     const isLoadedHeight = ref()
     const isLoadedBorder = ref()
+    const isLoading = ref(true)
     const isSelectedComponentFlag = ref([])
     const isSelectedComponentTitle = ref()
 
     onMounted(() => {
+        getLoginData()
         getAPP_NAME()
-        changeResponsive()
         SelectedComponentFlag()
+        changeResponsive()
         window.addEventListener('resize', changeResponsive)
     })
+
+    const getLoginData = () => {
+        fetch('/tps-site/auth/login/check')
+        .then((response) => response.json())
+        .then(res => {
+            if(res.ResponseData) {
+                router.push({ name: 'home' })
+            } else {
+                isLoading.value = false
+                isView.value = true
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 
     const getAPP_NAME = () => {
         fetch('/tps-site/get/env')
@@ -52,8 +74,9 @@
 </script>
 
 <template>
-    <div class="bg-dark d-flex align-items-center justify-content-center" style="width: 100%; height: 100vh;">
-        <div class="card text-bg-dark" :class="{ 'border-light': isLoadedBorder}" :style="{ width: isLoadedWidth, height: isLoadedHeight }">
+    <LoadingComponent v-if="isLoading" />
+    <div class="bg-dark d-flex align-items-center justify-content-center" style="width: 100%; height: 100vh;" v-if="isView">
+        <div class="card text-bg-dark colorBackGradient" :class="{ 'border-light': isLoadedBorder}" :style="{ width: isLoadedWidth, height: isLoadedHeight }">
             <div class="card-header border-0">
                 <div class="d-flex align-items-center justify-content-center">
                     <div class="text-center">
@@ -70,3 +93,25 @@
         </div>
     </div>
 </template>
+
+<style scoped>
+#clickItem:hover {
+    background: #3d3d3d;
+}
+.colorBackGradient { 
+    background: linear-gradient(-45deg, #181818, #3a3a3a) fixed;
+    background-size: 800% 800%;
+    animation: gradietionAnimation 4s ease infinite;
+}
+@keyframes gradietionAnimation { 
+    0%{
+        background-position:0% 50%
+    }
+    50%{
+        background-position:100% 50%
+    }
+    100%{
+        background-position:0% 50%
+    }
+}
+</style>

@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
 </head>
-<body>
+<body class="bg-dark">
     <div id="app"></div>
     @vite('resources/js/app.js')
 </body>
