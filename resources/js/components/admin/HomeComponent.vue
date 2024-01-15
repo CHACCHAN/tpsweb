@@ -6,8 +6,20 @@
         Menus: Array,
         Settings: Array,
     })
+    const isShow = ref(true)
 
-    onMounted(() => {})
+    onMounted(() => {
+        changeResponsive()
+        window.addEventListener('resize', changeResponsive)
+    })
+
+    const changeResponsive = () => {
+        if(window.screen.width <= 768) {
+            isShow.value = false
+        } else {
+            isShow.value = true
+        }
+    }
 </script>
 
 <template>
@@ -79,7 +91,7 @@
                         </svg>
                         <div class="h4 m-0 ms-2">サイト閲覧情報</div>
                     </div>
-                    <div class="collapse show" id="SeeSiteCollapse">
+                    <div class="collapse" :class="{ 'show': isShow }" id="SeeSiteCollapse">
                         <div class="card-body">
                             <LineChart />
                         </div>
@@ -93,7 +105,7 @@
                         </svg>
                         <div class="h4 m-0 ms-2">TPS Web to Discord</div>
                     </div>
-                    <div class="collapse show" id="DiscordCollapse">
+                    <div class="collapse" :class="{ 'show': isShow }" id="DiscordCollapse">
                         <div class="card-body">
                             未実装
                         </div>
@@ -109,7 +121,7 @@
                         </svg>
                         <div class="h4 m-0 ms-2">メール配信</div>
                     </div>
-                    <div class="collapse show" id="EmailCollapse">
+                    <div class="collapse" :class="{ 'show': isShow }" id="EmailCollapse">
                         <div class="card-body">
                             未実装
                         </div>
@@ -123,7 +135,7 @@
                         </svg>
                         <div class="h4 m-0 ms-2">TPS Web イベントとニュース</div>
                     </div>
-                    <div class="collapse show" id="NewsCollapse">
+                    <div class="collapse" :class="{ 'show': isShow }" id="NewsCollapse">
                         <div class="card-body">
                             <table class="table">
                                 <thead>
