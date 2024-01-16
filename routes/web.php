@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\PostingController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\MailController;
+use App\Models\Post;
+use App\Models\PostCategory;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +56,23 @@ Route::get('/auth/login/check', function() {
         ], 401);
     }
 });
+
+// 投稿データの取得
+Route::get('/get/postdata', function() {
+    return response()->json([
+        'responseData' => Post::get(),
+    ], 200);
+});
+// 投稿データのカテゴリの取得
+Route::get('/get/postcategory', function() {
+    return response()->json([
+        'responseData' => PostCategory::get(),
+    ], 200);
+});
+
+// メール
+// メール送信
+Route::post('/email/post', [MailController::class, 'postEmail']);
 
 Route::get('/laravel', fn() => view('welcome'));
 

@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, onMounted, computed } from 'vue'
+    import { ref, onMounted, onUpdated, computed } from 'vue'
     import LineChart from './LineChart.vue'
 
     const props = defineProps({
@@ -7,6 +7,9 @@
         Settings: Array,
     })
     const isShow = ref(true)
+    const isInputEmailSubject = ref()
+    const isInputEmailContent = ref()
+    const isInputEmailDisabled = ref(false)
 
     onMounted(() => {
         changeResponsive()
@@ -18,6 +21,44 @@
             isShow.value = false
         } else {
             isShow.value = true
+        }
+    }
+
+    const postEmail = () => {
+        let EmailPostSubmit = document.getElementById('EmailPostSubmit')
+        let beforeText = EmailPostSubmit.innerHTML
+
+        if(isInputEmailSubject.value && isInputEmailContent.value) {
+            isInputEmailDisabled.value = true
+            EmailPostSubmit.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>   配信中...'
+
+            fetch('/tps-site/email/post', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subject: isInputEmailSubject.value,
+                    content: isInputEmailContent.value,
+                }),
+            })
+            .then((response) => response.json())
+            .then(res => {
+                document.querySelector('meta[name="csrf-token"]').content = res.csrf
+                reset()
+            })
+            .catch(error => {
+                console.log(error)
+                reset()
+            })
+        }
+
+        function reset() {
+            isInputEmailDisabled.value = false
+            EmailPostSubmit.innerHTML = beforeText
+            isInputEmailSubject.value = ""
+            isInputEmailContent.value = ""
         }
     }
 </script>
@@ -123,7 +164,16 @@
                     </div>
                     <div class="collapse" :class="{ 'show': isShow }" id="EmailCollapse">
                         <div class="card-body">
-                            未実装
+                            <div class="mb-3">
+                                <label for="inputEmailSubject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="inputEmailSubject" v-model="isInputEmailSubject">
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputEmailContent" class="form-label">Content</label>
+                                <textarea class="form-control" id="inputEmailContent" rows="3" v-model="isInputEmailContent" placeholder="TPSユーザーにアイデアを配信してみましょう"></textarea>
+                                <p class="text-secondary">※TPSアカウント登録者宛に一斉送信します</p>
+                            </div>
+                            <button type="button" id="EmailPostSubmit" class="btn btn-success text-light rounded-pill" @click="postEmail()" :disabled="isInputEmailDisabled">配信する</button>
                         </div>
                     </div>
                 </div>

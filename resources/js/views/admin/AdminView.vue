@@ -3,6 +3,8 @@
     import { useRouter } from 'vue-router'
     import LoadingComponent from '../../components/loadingcomponent.vue'
     import HomeComponent from '../../components/admin/HomeComponent.vue'
+    import ReleaseComponent from '../../components/admin/ReleaseComponent.vue'
+    import PotingComponent from '../../components/admin/PotingComponent.vue'
 
     const isIconImage = location.protocol + '//' + location.host + '/tps-site/images/components/IconImage.png'
     const router = useRouter()
@@ -149,6 +151,8 @@
             <!-- コントロール画面 -->
             <div class="col-12 col-md-10 pt-3 bg-light">
                 <HomeComponent v-if="isSelectWeb[0]" :Menus="webMenus" :Settings="webSettings" />
+                <ReleaseComponent v-if="isSelectWeb[1]" />
+                <PotingComponent v-if="isSelectWeb[2]" />
             </div>
         </div>
     </div>
