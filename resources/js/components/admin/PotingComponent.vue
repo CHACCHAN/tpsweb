@@ -20,21 +20,43 @@
         window.addEventListener('resize', changeResponsive)
     })
 
-    const updateEditorContent = (newContent) => {
-        // テキストデータの適用
+    const updateEditorContent = async (newContent) => {
+        // テキストデータの適用 
         editorContent.value = newContent
+    }
 
-        // 画像の保存とソースの反映
-        const QuillEditorEl = document.getElementById('QuillEditor')
-        const imgs = QuillEditorEl.querySelectorAll('img')
-        const imgList = Array.from(imgs)
+    const uploadTempImg = () => {
+        new Promise((resolve, reject) => {
+            const imgList = Array.from(document.getElementById('QuillEditor').querySelectorAll('img'))
 
-        imgList.forEach((img, index) => {
-            console.log(img)
-            console.log(index)
-
-            // imgList[index].setAttribute('src', '/tps-site/images/')
+            for(let index in imgList) {
+                fetch('/tps-site/post/postdata/image/temp', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'enctype': 'multipart/form-data',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'image': imgList[index].src,
+                    }),
+                })
+                .then((response) => response.json())
+                .then(res => {
+                    console.log(res)
+                    imgList[index].src = res.image
+                    resolve()
+                })
+                .catch(error => {
+                    console.log(error)
+                    reject()
+                })
+            }
         })
+
+        // uploadTempImg
+        // .then(result => console.log('OK'))
+        // .catch(erroe => console.log('ERROR'))
     }
 
     const postAllChecked = () => {
@@ -187,6 +209,7 @@
                     <div id="QuillEditor" class="border mb-3">
                         <QuillEditor class="editor" :theme="isTheme" toolbar="full" v-model="editorContent" contentType="html" @update:content="updateEditorContent" placeholder="入力してください" />
                     </div>
+                    <button type="button" class="btn btn-primary" @click="uploadTempImg()">下書き保存</button>
                     <!-- プレビュー -->
                     <div class="ql-snow">
                         <div class="ql-editor" v-html="editorContent"></div>

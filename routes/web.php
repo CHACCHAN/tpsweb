@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\PostingController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\Admin\QuillController;
 use App\Models\Post;
 use App\Models\PostCategory;
 
@@ -69,6 +69,12 @@ Route::get('/get/postcategory', function() {
         'responseData' => PostCategory::get(),
     ], 200);
 });
+// 投稿データの一時画像の保存
+Route::post('/post/postdata/image/temp', [QuillController::class, 'saveImageTemp']);
+// 投稿データの正版画像の保存
+Route::post('/post/postdata/image', [QuillController::class, 'saveImage']);
+// 投稿データのコンテンツ保存
+Route::post('/post/postData/content', [QuillController::class, 'saveContent']);
 
 // メール
 // メール送信
