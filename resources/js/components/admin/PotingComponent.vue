@@ -43,7 +43,6 @@
                 })
                 .then((response) => response.json())
                 .then(res => {
-                    console.log(res)
                     imgList[index].src = res.image
                     resolve()
                 })
