@@ -150,7 +150,7 @@
         </div>
         
         <!-- リストView -->
-        <div class="card" v-if="isListView[0]">
+        <div class="card" v-show="isListView[0]">
             <div class="card-body">
                 <table class="table">
                     <thead>
@@ -190,7 +190,7 @@
         </div>
 
         <!-- 新規追加View -->
-        <div v-if="isListView[1]">
+        <div v-show="isListView[1]">
             <div class="row">
                 <!-- メイン -->
                 <div class="col-12 col-md-9">
