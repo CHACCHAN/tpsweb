@@ -21,7 +21,7 @@
     })
 
     const updateEditorContent = async (newContent) => {
-        // テキストデータの適用 
+        // テキストデータの適用
         editorContent.value = newContent
     }
 
@@ -43,6 +43,7 @@
                 })
                 .then((response) => response.json())
                 .then(res => {
+                    console.log(res)
                     imgList[index].src = res.image
                     resolve()
                 })
@@ -51,6 +52,8 @@
                     reject()
                 })
             }
+
+            console.log(editorContent.value)
         })
 
         // uploadTempImg
@@ -73,9 +76,10 @@
         }
     }
 
-    const getPosts = () => {
-        getPostData()
-        getPostCategory()
+    const getPosts = async() => {
+        await getPostData()
+        await getPostCategory()
+        isLoading.value = false
     }
 
     const getPostData = () => {
@@ -83,7 +87,6 @@
         .then((response) => response.json())
         .then(res => {
             isPostData.value = res.responseData
-            isLoading.value = false
             console.log(isPostData.value)
         })
         .catch(error => {
@@ -96,7 +99,6 @@
         .then((response) => response.json())
         .then(res => {
             isPostCategory.value = res.responseData
-            isLoading.value = false
             console.log(isPostCategory.value)
         })
         .catch(error => {

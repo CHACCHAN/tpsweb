@@ -4,7 +4,7 @@
     const props = defineProps({
         APP_NAME: String,
         LoginFlag: Boolean,
-        Adminstrator: Boolean,
+        Adminstrator: Number,
         IconImage: String,
     })
     const isBackGradient = ref(false)
