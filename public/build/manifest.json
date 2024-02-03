@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "_LoadingComponent-mWWOcOgR.js": {
     "file": "assets/LoadingComponent-mWWOcOgR.js",
+=======
+  "_LoadingComponent-kkJa27es.js": {
+    "file": "assets/LoadingComponent-kkJa27es.js",
+>>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
     "imports": [
       "resources/js/app.js"
     ]
@@ -17,18 +22,31 @@
       "resources/js/views/admin/AdminView.vue",
       "resources/js/views/home/HomeView.vue"
     ],
+<<<<<<< HEAD
     "file": "assets/app-3OcktGNO.js",
+=======
+    "file": "assets/app-8aqS0qPh.js",
+>>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
     "isEntry": true,
     "src": "resources/js/app.js"
   },
   "resources/js/views/admin/AdminView.vue": {
     "css": [
+<<<<<<< HEAD
       "assets/AdminView-1cRgso1b.css"
     ],
     "file": "assets/AdminView-3vmH7zFw.js",
     "imports": [
       "resources/js/app.js",
       "_LoadingComponent-mWWOcOgR.js"
+=======
+      "assets/AdminView-CtU5WcYp.css"
+    ],
+    "file": "assets/AdminView-rR9TB0at.js",
+    "imports": [
+      "resources/js/app.js",
+      "_LoadingComponent-kkJa27es.js"
+>>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
     ],
     "isDynamicEntry": true,
     "src": "resources/js/views/admin/AdminView.vue"
@@ -37,10 +55,17 @@
     "css": [
       "assets/Auth-NRCXcD4j.css"
     ],
+<<<<<<< HEAD
     "file": "assets/Auth-V8HXv0nP.js",
     "imports": [
       "resources/js/app.js",
       "_LoadingComponent-mWWOcOgR.js"
+=======
+    "file": "assets/Auth-6hLv-TGe.js",
+    "imports": [
+      "resources/js/app.js",
+      "_LoadingComponent-kkJa27es.js"
+>>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
     ],
     "isDynamicEntry": true,
     "src": "resources/js/views/auth/Auth.vue"
@@ -49,7 +74,11 @@
     "css": [
       "assets/HomeView-eT17JFyA.css"
     ],
+<<<<<<< HEAD
     "file": "assets/HomeView-XEWggWLZ.js",
+=======
+    "file": "assets/HomeView-fMUTTyVM.js",
+>>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
     "imports": [
       "resources/js/app.js"
     ],
