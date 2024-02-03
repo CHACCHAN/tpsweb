@@ -744,8 +744,7 @@
                         <div class="d-flex align-items-center justify-content-start text-secondary mt-1">
                             <div class="fw-bold">パーマリンク</div>
                             <div class="mx-2">:</div>
-                            <a :href="Permalink" target="_blank" v-text="Permalink + isClickedCategoryTitle + '/'"></a>
-                            <div class="text-dark text-decoration-underline me-2" v-text="isClickedProjectTitle"></div>
+                            <a :href="Permalink + 'post/' + isClickedCategoryTitle + '/' + isClickedProjectTitle" target="_blank" v-text="Permalink + 'post/' + isClickedCategoryTitle + '/' + isClickedProjectTitle"></a>
                         </div>
                     </div>
                     <!-- テキストエディタ -->
@@ -753,12 +752,11 @@
                         <div class="text-center text-secondary" :class="{ 'd-none': isEditorMsg }">Mobile Editor</div>
                         <QuillEditor class="editor z-3" :theme="isTheme" toolbar="full" contentType="html" v-model:content="editorContent" @update:content="updateEditorContent" placeholder="入力してください" />
                     </div>
-
                     <!-- プレビュー -->
                     <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-fullscreen">
-                            <div class="modal-content">
-                                <div class="modal-header border-0 text-bg-dark py-1">
+                            <div class="modal-content text-bg-dark">
+                                <div class="modal-header border-0 bg-dark py-1">
                                     <h1 id="previewModalLabel" class="modal-title fs-5 fw-bold">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-tv-fill" viewBox="0 0 16 16">
                                             <path d="M2.5 13.5A.5.5 0 0 1 3 13h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zM2 2h12s2 0 2 2v6s0 2-2 2H2s-2 0-2-2V4s0-2 2-2z"/>
@@ -769,7 +767,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body p-0">
-                                    <div class="container">
+                                    <div class="container text-bg-light rounded-4 my-2">
                                         <div class="ql-snow">
                                             <div class="ql-editor" v-html="editorContent"></div>
                                         </div>

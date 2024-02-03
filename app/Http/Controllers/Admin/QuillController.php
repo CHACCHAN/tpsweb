@@ -45,7 +45,7 @@ class QuillController extends Controller
             
             return response()->json([
                 'id' => PostImage::where('image', $image_path)->first()->id,
-                'image' => 'storage/postImage/' . $image_path
+                'image' => '/tps-site/storage/postImage/' . $image_path
             ], 200);
         } catch (\Exception $e) {
             return response()->json(['image' => false], 500);

@@ -7,6 +7,12 @@ const routes = [
         component: () => import('./views/home/HomeView.vue'),
         name: "home"
     },
+    // Post
+    {
+        path: "/post:pathMatch(.*)*",
+        component: () => import('./views/home/PostView.vue'),
+        name: "post"
+    },
     // Auth
     {
         path: "/auth",

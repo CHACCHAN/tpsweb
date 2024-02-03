@@ -11,6 +11,8 @@
     const isBorderBottom = ref(false)
     const isPositionLeft = ref(0)
     const isD_none = ref(true)
+    const isPostDatas = ref([])
+    const isPostCategorys = ref([])
 
     onMounted(() => {
         window.addEventListener('scroll', () => {
@@ -31,16 +33,47 @@
                 isD_none.value = false
             }
         })
+        getPosts()
     })
+
+    const getPosts = () => {
+        getPostData()
+        getPostCategory()
+    }
+
+    const getPostData = () => {
+        fetch('/tps-site/get/postdata')
+        .then((response) => response.json())
+        .then(res => {
+            isPostDatas.value = res.responseData
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
+    const getPostCategory = () => {
+        fetch('/tps-site/get/postcategory')
+        .then((response) => response.json())
+        .then(res => {
+            isPostCategorys.value = res.responseData
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 </script>
 
 <template>
     <div>
         <div class="position-relative position-fixed w-100 z-3">
+            <!-- ヘッダー -->
             <header class="position-absolute w-100">
                 <div class="container-fluid text-light border-2 py-2" :class="{ 'colorBackGradient': isBackGradient, 'border-bottom': isBorderBottom, 'border-secondary': isBorderBottom }">
                     <div class="row">
+                        <!-- 左サイド -->
                         <div class="col-6 col-md-10 d-flex align-items-center justify-content-start">
+                            <!-- 3本バーキャンバス -->
                             <button type="button" id="clickItem" class="p-2 border-0 rounded-circle" data-bs-toggle="offcanvas" data-bs-target="#SideCanvas" aria-controls="SideCanvas">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
@@ -64,14 +97,19 @@
 
                                 </div>
                             </div>
+
+                            <!-- ロゴ -->
                             <router-link :to="{ name: 'home' }" class="d-flex align-items-center text-decoration-none text-light ms-2">
                                 <img class="rounded-circle" :src="IconImage" width="30px" height="30px" alt="">
                                 <div class="fs-3 fw-bold ms-1" v-text="APP_NAME"></div>
                             </router-link>
+
+                            <!-- ホーム -->
                             <div id="menuItem" class="d-none d-md-block ms-5">
-                                <button type="button" id="clickItem" class="btn border-0 rounded-pill ms-2" :class="{ 'clicked': !isD_none }">ホーム</button>
+                                <button type="button" id="clickItem" class="btn border-0 rounded-pill ms-2" :class="{ 'clicked': !isD_none }">HOME</button>
                             </div>
                         </div>
+                        <!-- 右サイド -->
                         <div class="col-6 col-md-2 d-flex align-items-center justify-content-end">
                             <router-link :to="{ name: 'login' }" class="btn btn-light rounded-pill" :class="{ 'btn-dark': !isBackGradient }" v-if="!LoginFlag">ログイン</router-link>
                             <!-- 管理者のみ表示 -->
@@ -100,7 +138,7 @@
             </header>
 
 
-            <!-- PC用　上部メニュー -->
+            <!-- PC用　Fixedメニュー -->
             <div class="position-fixed w-100" :class="{ 'd-none': isD_none }" style="top: 65px; left: 0;">
                 <div class="position-relative">
                     <div class="position-absolute w-100 d-flex align-items-center justify-content-center">
@@ -110,14 +148,22 @@
                                 <div class="col-3 text-light border-end border-secondary">
                                     <div class="rounded-3 p-3">
                                         <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4">TPS Portal</div>
-                                        <router-link to="" id="clickItem" class="btn border-0 text-primary text-decoration-none rounded-pill">ホーム</router-link>
+                                        <router-link :to="{ name: 'home' }" id="clickItem" class="btn border-0 text-primary text-decoration-none rounded-pill">ホーム</router-link>
                                     </div>
                                 </div>
-                                <!-- リストメニュー -->
-                                <div class="col-3">
-                                    <div class="rounded-3 p-3 bg-light">
-                                        <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4">基本メニュー</div>
-                                        <router-link to="" class="btn btn-primary rounded-pill">ホーム</router-link>
+                                <!-- 自由投稿メニュー -->
+                                <div class="col-9">
+                                    <div class="row">
+                                        <div class="col-4 mb-2" v-for="isPostCategory in isPostCategorys" :key="isPostCategory.id">
+                                            <div class="rounded-3 p-3 bg-light">
+                                                <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4 text-truncate" v-text="isPostCategory.category"></div>
+                                                <ul v-for="isPostData in isPostDatas" :key="isPostData.id" class="m-0">
+                                                    <li v-if="isPostCategory.id == isPostData.category_id && isPostData.public">
+                                                        <router-link :to="'/post/' + isPostCategory.category + '/' + isPostData.title" class="btn border-0 text-primary fw-bold fs-5 p-0 ps-2 text-decoration-underline text-truncate">{{ isPostData.title }}</router-link>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -128,14 +174,15 @@
             <!-- モバイル用 下部メニュー -->
             <div class="position-fixed bottom-0 d-block d-md-none w-100">
                 <div class="position-relative w-100">
-                    <div class="bg-dark text-light rounded-pill m-2 p-2 px-4">
+                    <div class="bg-dark text-light rounded-pill border m-2 p-2 px-4">
                         <div class="mx-4">
-                            <button type="button">
+                            <!-- メニュー -->
+                            <router-link :to="{ name: 'home' }" class="btn border-0 text-light p-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
                                     <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
                                 </svg>
                                 <div style="font-size:8px;">HOME</div>
-                            </button>
+                            </router-link>
                         </div>
                     </div>
                 </div>

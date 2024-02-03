@@ -90,7 +90,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid bg-light">
         <div class="text-center text-secondary" style="font-size: 12px;">Copyright © {{ APP_NAME }} by CHACCHAN SYSTEM . All Rights Reserved.</div>
     </div>
 </template>

@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Post;
 use App\Models\PostCategory;
+use App\Models\PostImage;
 
 class PostingController extends Controller
 {
@@ -131,7 +133,13 @@ class PostingController extends Controller
     // プロジェクトの削除
     public function deleteProject(Request $request)
     {
+        foreach(PostImage::where('post_id', $request->id)->get() as $image)
+        {
+            Storage::disk('public')->delete('postImage/' . $image->image);
+        }
+        PostImage::where('post_id', $request->id)->delete();
         Post::where('id', $request->id)->delete();
+
         return response()->json([ 'responseData' => true ], 200);
     }
 

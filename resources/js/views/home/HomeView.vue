@@ -41,6 +41,7 @@
         }
     }
 
+    // データ取得
     const getAPP_NAME = () => {
         fetch('/tps-site/get/env')
         .then((response) => response.json())
@@ -69,6 +70,7 @@
     <!-- Header -->
     <TopHeader :APP_NAME="isAPP_NAME" :LoginFlag="isLoginFlag" :Adminstrator="isAdminstrator" :IconImage="isIconImage" />
     
+    <!-- Default -->
     <div class="position-relative z-n1" :style="{ opacity: isScrolledOpacity }">
         <video :poster="backVideo[0].videoImage" width="100%" muted loop autoplay playsinline oncontextmenu="return false;">
             <source :src="backVideo[0].videoMp4" type="video/mp4" />
@@ -90,6 +92,8 @@
             </div>
         </div>
     </div>
+    <!-- Component -->
+    
     
     <!-- Footer -->
     <BottomFooter :APP_NAME="isAPP_NAME" :LoginFlag="isLoginFlag" :Adminstrator="isAdminstrator" :IconImage="isIconImage" />
