@@ -44,6 +44,7 @@
 
     onMounted(() => {
         document.title = 'TPS Webクリエイター'
+        history.replaceState('','','/tps-site/admin')
         getLoginData()
     })
     

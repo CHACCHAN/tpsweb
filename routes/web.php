@@ -1,11 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\Admin\QuillController;
+use App\Http\Controllers\Admin\PostingController;
 use App\Models\Post;
 use App\Models\PostCategory;
+use GuzzleHttp\Psr7\Query;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,9 +32,7 @@ Route::get('/auth/logout', [UserController::class, 'logout']);
 
 // API
 // APP_NAMEの取得
-Route::get('/get/env', function() {
-    return response()->json(['ResponseData' => config('app.name')], 200);
-});
+Route::get('/get/env', function() {return response()->json(['ResponseData' => config('app.name')], 200);});
 
 // ログイン状況取得
 Route::get('/auth/login/check', function() {
@@ -57,24 +58,35 @@ Route::get('/auth/login/check', function() {
     }
 });
 
+// Admin
+// カテゴリ
+// カテゴリの新規作成
+Route::post('/post/postcategory/create', [PostingController::class, 'makeNewCategory']);
+// カテゴリのタイトル更新
+Route::post('/post/postcategory/update', [PostingController::class, 'updateCategoryTitle']);
+
+// プロジェクト
+// プロジェクトの新規作成
+Route::post('/post/postdata/create', [PostingController::class, 'makeNewProject']);
+// プロジェクトのタイトル更新
+Route::post('/post/postdata/update', [PostingController::class, 'updateProjectTitle']);
+// プロジェクトの削除
+Route::post('/post/postdata/delete', [PostingController::class, 'deleteProject']);
+// プロジェクトの移動
+Route::post('/post/postdata/move', [PostingController::class, 'moveProject']);
+// プロジェクトの複製
+Route::post('/post/postdata/copy', [PostingController::class, 'copyProject']);
+
 // 投稿データの取得
-Route::get('/get/postdata', function() {
-    return response()->json([
-        'responseData' => Post::get(),
-    ], 200);
-});
+Route::get('/get/postdata', function() {return response()->json(['responseData' => Post::get()], 200);});
 // 投稿データのカテゴリの取得
-Route::get('/get/postcategory', function() {
-    return response()->json([
-        'responseData' => PostCategory::get(),
-    ], 200);
-});
-// 投稿データの一時画像の保存
-Route::post('/post/postdata/image/temp', [QuillController::class, 'saveImageTemp']);
+Route::get('/get/postcategory', function() {return response()->json(['responseData' => PostCategory::get()], 200);});
+// 投稿データの一時画像の削除
+Route::post('/post/postdata/image/remove', [QuillController::class, 'removeImageTemp']);
 // 投稿データの正版画像の保存
 Route::post('/post/postdata/image', [QuillController::class, 'saveImage']);
 // 投稿データのコンテンツ保存
-Route::post('/post/postData/content', [QuillController::class, 'saveContent']);
+Route::post('/post/postdata/content', [QuillController::class, 'saveContent']);
 
 // メール
 // メール送信
