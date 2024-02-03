@@ -108,7 +108,7 @@ class PostingController extends Controller
         ]);
 
         $PostTemp = Post::where('id', $request->id)->first();
-        if(Post::where([['category_id', $request->category_id], ['title', $PostTemp->title]])->exists())
+        if(Post::where([['category_id', $request->category_id], ['title', $request->title]])->exists())
         {
             $max_number = Post::where([['category_id', $request->category_id], ['title', 'like', $PostTemp->title . '(%)']])->get()->map(function ($post) {
                 preg_match('/\((\d+)\)$/', $post->title, $matches);
@@ -183,5 +183,12 @@ class PostingController extends Controller
         $Post->save();
 
         return response()->json(['responseData' => true], 200);
+    }
+
+    // プロジェクトの公開設定更新
+    public function updateProjectPublic(Request $request)
+    {
+        Post::where('id', $request->id)->update(['public' => $request->public]);
+        return response()->json([ 'responseData' => true ], 200);
     }
 }

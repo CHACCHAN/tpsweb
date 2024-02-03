@@ -76,6 +76,8 @@ Route::post('/post/postdata/delete', [PostingController::class, 'deleteProject']
 Route::post('/post/postdata/move', [PostingController::class, 'moveProject']);
 // プロジェクトの複製
 Route::post('/post/postdata/copy', [PostingController::class, 'copyProject']);
+// プロジェクトの公開設定更新
+Route::post('/post/postdata/public', [PostingController::class, 'updateProjectPublic']);
 
 // 投稿データの取得
 Route::get('/get/postdata', function() {return response()->json(['responseData' => Post::get()], 200);});
