@@ -1,14 +1,32 @@
 {
-<<<<<<< HEAD
-  "_LoadingComponent-mWWOcOgR.js": {
-    "file": "assets/LoadingComponent-mWWOcOgR.js",
-=======
-  "_LoadingComponent-kkJa27es.js": {
-    "file": "assets/LoadingComponent-kkJa27es.js",
->>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
+  "_FooterComponent-!~{007}~.js": {
+    "file": "assets/FooterComponent-z1yAjWnH.css",
+    "src": "_FooterComponent-!~{007}~.js"
+  },
+  "_FooterComponent-Mzi7-c5p.js": {
+    "css": [
+      "assets/FooterComponent-z1yAjWnH.css"
+    ],
+    "file": "assets/FooterComponent-Mzi7-c5p.js",
     "imports": [
       "resources/js/app.js"
     ]
+  },
+  "_LoadingComponent-IEZKlMOA.js": {
+    "file": "assets/LoadingComponent-IEZKlMOA.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_vue-quill.bubble-!~{009}~.js": {
+    "file": "assets/vue-quill-LFsjKerb.css",
+    "src": "_vue-quill.bubble-!~{009}~.js"
+  },
+  "_vue-quill.bubble-B1t1Vazk.js": {
+    "css": [
+      "assets/vue-quill-LFsjKerb.css"
+    ],
+    "file": "assets/vue-quill.bubble-B1t1Vazk.js"
   },
   "resources/js/app.js": {
     "css": [
@@ -16,37 +34,26 @@
     ],
     "dynamicImports": [
       "resources/js/views/home/HomeView.vue",
+      "resources/js/views/home/PostView.vue",
       "resources/js/views/auth/Auth.vue",
       "resources/js/views/auth/Auth.vue",
       "resources/js/views/auth/Auth.vue",
       "resources/js/views/admin/AdminView.vue",
       "resources/js/views/home/HomeView.vue"
     ],
-<<<<<<< HEAD
-    "file": "assets/app-3OcktGNO.js",
-=======
-    "file": "assets/app-8aqS0qPh.js",
->>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
+    "file": "assets/app-mM3nzJHX.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
   "resources/js/views/admin/AdminView.vue": {
     "css": [
-<<<<<<< HEAD
-      "assets/AdminView-1cRgso1b.css"
+      "assets/AdminView-ID7-hrkt.css"
     ],
-    "file": "assets/AdminView-3vmH7zFw.js",
+    "file": "assets/AdminView-kCH9xt3w.js",
     "imports": [
       "resources/js/app.js",
-      "_LoadingComponent-mWWOcOgR.js"
-=======
-      "assets/AdminView-CtU5WcYp.css"
-    ],
-    "file": "assets/AdminView-rR9TB0at.js",
-    "imports": [
-      "resources/js/app.js",
-      "_LoadingComponent-kkJa27es.js"
->>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
+      "_LoadingComponent-IEZKlMOA.js",
+      "_vue-quill.bubble-B1t1Vazk.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/views/admin/AdminView.vue"
@@ -55,35 +62,36 @@
     "css": [
       "assets/Auth-NRCXcD4j.css"
     ],
-<<<<<<< HEAD
-    "file": "assets/Auth-V8HXv0nP.js",
+    "file": "assets/Auth-DZPwiY5E.js",
     "imports": [
       "resources/js/app.js",
-      "_LoadingComponent-mWWOcOgR.js"
-=======
-    "file": "assets/Auth-6hLv-TGe.js",
-    "imports": [
-      "resources/js/app.js",
-      "_LoadingComponent-kkJa27es.js"
->>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
+      "_LoadingComponent-IEZKlMOA.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/views/auth/Auth.vue"
   },
   "resources/js/views/home/HomeView.vue": {
     "css": [
-      "assets/HomeView-eT17JFyA.css"
+      "assets/HomeView-BTQlcEw4.css"
     ],
-<<<<<<< HEAD
-    "file": "assets/HomeView-XEWggWLZ.js",
-=======
-    "file": "assets/HomeView-fMUTTyVM.js",
->>>>>>> 0cdb8751f8bd0088f6792f9c90e7243fb3fbbc59
+    "file": "assets/HomeView-4vpSnY30.js",
     "imports": [
+      "_FooterComponent-Mzi7-c5p.js",
       "resources/js/app.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/views/home/HomeView.vue"
+  },
+  "resources/js/views/home/PostView.vue": {
+    "file": "assets/PostView-OCwooEUn.js",
+    "imports": [
+      "_LoadingComponent-IEZKlMOA.js",
+      "_FooterComponent-Mzi7-c5p.js",
+      "_vue-quill.bubble-B1t1Vazk.js",
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/views/home/PostView.vue"
   },
   "resources/sass/app.scss": {
     "file": "assets/app-lhA9k1qk.css",

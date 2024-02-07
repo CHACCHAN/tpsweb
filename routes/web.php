@@ -6,8 +6,15 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\Admin\QuillController;
 use App\Http\Controllers\Admin\PostingController;
+use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\DiscordController;
+use App\Models\User;
 use App\Models\Post;
 use App\Models\PostCategory;
+use App\Models\Media;
+use App\Models\MediaGroup;
+use App\Models\DiscordMedia;
+use App\Models\DiscordPost;
 use GuzzleHttp\Psr7\Query;
 
 /*
@@ -58,7 +65,10 @@ Route::get('/auth/login/check', function() {
     }
 });
 
-// Admin
+// ユーザIDとユーザネームを取得
+Route::get('/auth/get', function() { return response()->json([ 'responseData' => User::get(['id', 'name']) ], 200); });
+
+// Admin Posting
 // カテゴリ
 // カテゴリの新規作成
 Route::post('/post/postcategory/create', [PostingController::class, 'makeNewCategory']);
@@ -89,6 +99,34 @@ Route::post('/post/postdata/image/remove', [QuillController::class, 'removeImage
 Route::post('/post/postdata/image', [QuillController::class, 'saveImage']);
 // 投稿データのコンテンツ保存
 Route::post('/post/postdata/content', [QuillController::class, 'saveContent']);
+
+// Admin Media
+// メディアグループ取得
+Route::get('/get/mediagroup', function() {return response()->json(['responseData' => MediaGroup::latest()->get()], 200);});
+// メディア取得
+Route::get('/get/media', function() {return response()->json(['responseData' => Media::latest()->get()], 200);});
+// メディアグループ作成
+Route::post('/post/mediagroup/create', [MediaController::class, 'makeNewMediaGroup']);
+// メディアグループ更新
+Route::post('/post/mediagroup/update', [MediaController::class, 'updateMediaGroup']);
+// メディアグループ削除
+Route::post('/post/mediagroup/delete', [MediaController::class, 'deleteMediaGroup']);
+// メディア投稿
+Route::post('/post/media/upload', [MediaController::class, 'uploadMedia']);
+// メディア削除
+Route::post('/post/media/delete', [MediaController::class, 'deleteMedia']);
+
+// Discord
+// ポスト設定の取得
+Route::get('/get/discord/post', function() { return response()->json([ 'responseData' => DiscordPost::first() ]);});
+// メディア設定の取得
+Route::get('/get/discord/media', function() { return response()->json([ 'responseData' => DiscordMedia::first() ]);});
+// ポスト設定の更新
+Route::post('/post/discord/post', [DiscordController::class, 'updatePost']);
+// メディア設定の更新
+Route::post('/post/discord/media', [DiscordController::class, 'updateMedia']);
+// Discordに投稿
+Route::post('/post/discord/send', [DiscordController::class, 'postDiscord']);
 
 // メール
 // メール送信

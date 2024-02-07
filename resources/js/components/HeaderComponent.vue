@@ -7,10 +7,12 @@
         Adminstrator: Number,
         IconImage: String,
     })
+    const isLoading = ref(true)
     const isBackGradient = ref(false)
     const isBorderBottom = ref(false)
     const isPositionLeft = ref(0)
-    const isD_none = ref(true)
+    const isClickedHome = ref(true)
+    const isClickedImage = ref(true)
     const isPostDatas = ref([])
     const isPostCategorys = ref([])
 
@@ -25,41 +27,53 @@
             }
         })
 
+        // Fixedのサイズ調整、クリックイベント
         document.addEventListener('click', (e) => {
             if(!e.target.closest('#menuItem') && !e.target.closest('#listMenu')) {
-                isD_none.value = true
-            } else {
                 isPositionLeft.value = (e.pageX - 70) + 'px'
-                isD_none.value = false
+                isClickedHome.value = true
+                isClickedImage.value = true
             }
         })
         getPosts()
     })
 
-    const getPosts = () => {
-        getPostData()
-        getPostCategory()
+    const getPosts = async() => {
+        const getPostDataPromise = getPostData()
+        const getPostCategoryPromise = getPostCategory()
+
+        await Promise.all([getPostDataPromise, getPostCategoryPromise])
+        
+        isLoading.value = false
     }
 
     const getPostData = () => {
-        fetch('/tps-site/get/postdata')
-        .then((response) => response.json())
-        .then(res => {
-            isPostDatas.value = res.responseData
-        })
-        .catch(error => {
-            console.log(error)
+        return new Promise((resolve, reject) => {
+            fetch('/tps-site/get/postdata')
+            .then((response) => response.json())
+            .then(res => {
+                isPostDatas.value = res.responseData
+                resolve()
+            })
+            .catch(error => {
+                console.log(error)
+                reject(error)
+            })
         })
     }
 
     const getPostCategory = () => {
-        fetch('/tps-site/get/postcategory')
-        .then((response) => response.json())
-        .then(res => {
-            isPostCategorys.value = res.responseData
-        })
-        .catch(error => {
-            console.log(error)
+        return new Promise((resolve, reject) => {
+            fetch('/tps-site/get/postcategory')
+            .then((response) => response.json())
+            .then(res => {
+                isPostCategorys.value = res.responseData
+                resolve()
+            })
+            .catch(error => {
+                console.log(error)
+                reject(error)
+            })
         })
     }
 </script>
@@ -106,7 +120,12 @@
 
                             <!-- ホーム -->
                             <div id="menuItem" class="d-none d-md-block ms-5">
-                                <button type="button" id="clickItem" class="btn border-0 rounded-pill ms-2" :class="{ 'clicked': !isD_none }">HOME</button>
+                                <button type="button" id="clickItem" class="btn border-0 rounded-pill ms-2" :class="{ 'clicked': !isClickedHome }" 
+                                    @click="isClickedHome = !isClickedHome, isClickedImage = true">HOME</button>
+                            </div>
+                            <div id="menuItem" class="d-none d-md-block">
+                                <button type="button" id="clickItem" class="btn border-0 rounded-pill ms-2" :class="{ 'clicked': !isClickedImage }" 
+                                    @click="isClickedHome = true, isClickedImage = !isClickedImage">IMAGE</button>
                             </div>
                         </div>
                         <!-- 右サイド -->
@@ -138,8 +157,9 @@
             </header>
 
 
-            <!-- PC用　Fixedメニュー -->
-            <div class="position-fixed w-100" :class="{ 'd-none': isD_none }" style="top: 65px; left: 0;">
+
+            <!-- PC用 Fixed HOME -->
+            <div class="position-fixed w-100" v-if="!isClickedHome" style="top: 65px; left: 0;">
                 <div class="position-relative">
                     <div class="position-absolute w-100 d-flex align-items-center justify-content-center">
                         <div id="listMenu" class="bg-dark p-2 rounded-3 shadow-lg" style="width: 65%;">
@@ -154,12 +174,60 @@
                                 <!-- 自由投稿メニュー -->
                                 <div class="col-9">
                                     <div class="row">
+                                        <div class="col-12 mt-5" v-if="isLoading">
+                                            <div class="text-center text-light">
+                                                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-4 mb-2" v-for="isPostCategory in isPostCategorys" :key="isPostCategory.id">
-                                            <div class="rounded-3 p-3 bg-light">
+                                            <div class="rounded-3 p-3 bg-light" v-if="!isLoading">
                                                 <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4 text-truncate" v-text="isPostCategory.category"></div>
                                                 <ul v-for="isPostData in isPostDatas" :key="isPostData.id" class="m-0">
                                                     <li v-if="isPostCategory.id == isPostData.category_id && isPostData.public">
-                                                        <router-link :to="'/post/' + isPostCategory.category + '/' + isPostData.title" class="btn border-0 text-primary fw-bold fs-5 p-0 ps-2 text-decoration-underline text-truncate">{{ isPostData.title }}</router-link>
+                                                        <router-link
+                                                            :to="'/post/' + isPostCategory.category + '/' + isPostData.title"
+                                                            class="btn border-0 text-primary fs-5 p-0 ps-2 text-decoration-underline text-truncate">
+                                                            {{ isPostData.title }}
+                                                        </router-link>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- PC用 Fixed Image -->
+            <div class="position-fixed w-100" v-if="!isClickedImage" style="top: 65px; left: 0;">
+                <div class="position-relative">
+                    <div class="position-absolute w-100 d-flex align-items-center justify-content-center">
+                        <div id="listMenu" class="bg-dark p-2 rounded-3 shadow-lg" style="width: 65%;">
+                            <div class="row">
+                                <!-- 写真集タブ -->
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12 mt-5" v-if="isLoading">
+                                            <div class="text-center text-light">
+                                                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3 mb-2" v-for="isPostCategory in isPostCategorys" :key="isPostCategory.id">
+                                            <div class="rounded-3 p-3 bg-light" v-if="!isLoading">
+                                                <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4 text-truncate" v-text="isPostCategory.category"></div>
+                                                <ul v-for="isPostData in isPostDatas" :key="isPostData.id" class="m-0">
+                                                    <li v-if="isPostCategory.id == isPostData.category_id && isPostData.public">
+                                                        <router-link
+                                                            :to="'/post/' + isPostCategory.category + '/' + isPostData.title"
+                                                            class="btn border-0 text-primary fs-5 p-0 ps-2 text-decoration-underline text-truncate">
+                                                            {{ isPostData.title }}
+                                                        </router-link>
                                                     </li>
                                                 </ul>
                                             </div>

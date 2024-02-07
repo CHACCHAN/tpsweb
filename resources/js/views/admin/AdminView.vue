@@ -5,6 +5,7 @@
     import HomeComponent from '../../components/admin/HomeComponent.vue'
     import ReleaseComponent from '../../components/admin/ReleaseComponent.vue'
     import PostingComponent from '../../components/admin/PostingComponent.vue'
+    import MediaComponent from '../../components/admin/MediaComponent.vue'
 
     const isIconImage = location.protocol + '//' + location.host + '/tps-site/images/components/IconImage.png'
     const router = useRouter()
@@ -154,6 +155,7 @@
                 <HomeComponent v-if="isSelectWeb[0]" :Menus="webMenus" :Settings="webSettings" />
                 <ReleaseComponent v-if="isSelectWeb[1]" />
                 <PostingComponent v-if="isSelectWeb[2]" />
+                <MediaComponent v-if="isSelectWeb[3]" />
             </div>
         </div>
     </div>

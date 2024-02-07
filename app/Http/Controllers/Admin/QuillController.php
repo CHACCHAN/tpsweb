@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\PostImage;
-use Exception;
 
 class QuillController extends Controller
 {

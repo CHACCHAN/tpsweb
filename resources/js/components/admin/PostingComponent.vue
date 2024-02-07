@@ -24,6 +24,7 @@
     const isClickedCategoryTitle = ref()
     const isClickedProjectTitle = ref()
     const isClickedProjectPublic = ref(false)
+    const isClickedProjectDate = ref()
     const isUpdateCategoryText = ref()
     const isCreateCategoryText = ref()
     const isUpdateProjectText = ref()
@@ -543,7 +544,7 @@
                         <div v-for="isPostData in isPostDatas" :key="isPostData.id">
                             <div v-if="isPostData.category_id == isClickedCategoryID" class="border-bottom">
                                 <div class="row btn border-0 d-flex align-items-center justify-content-center p-0 py-1">
-                                    <div class="col-11 d-flex align-items-center justify-content-start" @click="isClickedProjectID = isPostData.id, isListView = new Array(), isListView[1] = true, isClickedProjectTitle = isPostData.title, editorContent = isPostData.content, isClickedProjectPublic = isPostData.public">
+                                    <div class="col-11 d-flex align-items-center justify-content-start" @click="isClickedProjectID = isPostData.id, isListView = new Array(), isListView[1] = true, isClickedProjectTitle = isPostData.title, editorContent = isPostData.content, isClickedProjectPublic = isPostData.public, isClickedProjectDate = isPostData.updated_at">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filetype-html" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M14 4.5V11h-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5Zm-9.736 7.35v3.999h-.791v-1.714H1.79v1.714H1V11.85h.791v1.626h1.682V11.85h.79Zm2.251.662v3.337h-.794v-3.337H4.588v-.662h3.064v.662H6.515Zm2.176 3.337v-2.66h.038l.952 2.159h.516l.946-2.16h.038v2.661h.715V11.85h-.8l-1.14 2.596H9.93L8.79 11.85h-.805v3.999h.706Zm4.71-.674h1.696v.674H12.61V11.85h.79v3.325Z"/>
                                         </svg>
@@ -739,12 +740,15 @@
                 <!-- メイン -->
                 <div class="col-12 col-md-9">
                     <!-- 基本 -->
-                    <div class="mb-3">
+                    <div class="mb-3 text-truncate">
                         <input type="text" class="form-control rounded-pill border-dark" v-model="isClickedProjectTitle" @change="updateEditorContentText()" placeholder="タイトルを入力してください">
                         <div class="d-flex align-items-center justify-content-start text-secondary mt-1">
                             <div class="fw-bold">パーマリンク</div>
                             <div class="mx-2">:</div>
-                            <a :href="Permalink + 'post/' + isClickedCategoryTitle + '/' + isClickedProjectTitle" target="_blank" v-text="Permalink + 'post/' + isClickedCategoryTitle + '/' + isClickedProjectTitle"></a>
+                            <a 
+                                :href="Permalink + 'post/' + isClickedCategoryTitle + '/' + isClickedProjectTitle" target="_blank" v-text="Permalink + 'post/' + isClickedCategoryTitle + '/' + isClickedProjectTitle"
+                                class="text-truncate"    
+                            ></a>
                         </div>
                     </div>
                     <!-- テキストエディタ -->
@@ -768,6 +772,7 @@
                                 </div>
                                 <div class="modal-body p-0">
                                     <div class="container text-bg-light rounded-4 my-2">
+                                        <p v-text="'投稿日時 : ' + isClickedProjectDate" class="text-secondary text-end"></p>
                                         <div class="ql-snow">
                                             <div class="ql-editor" v-html="editorContent"></div>
                                         </div>
@@ -787,7 +792,7 @@
                             </svg>
                             <div class="fs-5 ms-2">公開</div>
                         </div>
-                        <div class="collapse show" id="publicSetting">
+                        <div class="collapse" :class="{ show: isEditorMsg }" id="publicSetting">
                             <div class="card-body rounded-bottom px-3 py-1" style="background: rgb(231, 227, 227);">
                                 <!-- プレビュー -->
                                 <button type="button" id="preView" class="btn border-primary text-primary rounded-pill py-1 w-100" data-bs-toggle="modal" data-bs-target="#previewModal">
@@ -840,7 +845,7 @@
                             </svg>
                             <div class="fs-5 ms-2">ステータス</div>
                         </div>
-                        <div class="collapse show" id="categorySetting">
+                        <div class="collapse" :class="{ show: isEditorMsg }" id="categorySetting">
                             <div class="card-body rounded-bottom px-3 py-1" style="background: rgb(231, 227, 227);">
                                 <!-- 下書き保存 -->
                                 <div class="d-flex align-items-center justify-content-start text-secondary">

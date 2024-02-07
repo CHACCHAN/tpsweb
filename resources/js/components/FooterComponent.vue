@@ -56,37 +56,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-7">
-                    <div class="row my-2">
-                        <div class="col-6 mb-3" v-for="FooterTag in FooterTags" :key="FooterTag">
-                            <a :href="FooterTag.url" id="HoverAnimate" class="card btn border-0 p-0" target="_blank">
-                                <div class="card-body bg-secondary rounded-1 p-2">
-                                    <div class="row">
-                                        <div class="col-2 text-center" v-html="FooterTag.icon"></div>
-                                        <div class="col-10 d-flex align-items-center justify-content-center">
-                                            <h5 class="m-0" v-text="FooterTag.title"></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 mb-2">
-                    <div class="row">
-                        <div class="col d-flex align-items-center justify-content-center">
-                            <div class="vr"></div>
-                            <div class="mx-5">サッサのエロ画像集</div>
-                            <div class="vr"></div>
-                            <div class="mx-5">サッサのエロ画像集</div>
-                            <div class="vr"></div>
-                            <div class="mx-5">サッサのエロ画像集</div>
-                            <div class="vr"></div>
-                            <div class="mx-5">サッサのエロ画像集</div>
-                            <div class="vr"></div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
