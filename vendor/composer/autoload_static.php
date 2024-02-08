@@ -18,16 +18,16 @@ class ComposerStaticInitef970ef34ec5a4cbec2848bcff648cd2
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '3bd81c9b8fcc150b69d8b63b4d2ccf23' => __DIR__ . '/..' . '/spatie/flare-client-php/src/helpers.php',
         '35a6ad97d21e794e7e22a17d806652e4' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Functions.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '47e1160838b5e5a10346ac4084b58c23' => __DIR__ . '/..' . '/laravel/prompts/src/helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '265b4faa2b3a9766332744949e83bf97' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Collections/helpers.php',
         'c7a3c339e7e14b60e06a2d7fcce9476b' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Events/functions.php',
         'f57d353b41eb2e234b26064d63d8c5dd' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Filesystem/functions.php',
@@ -49,7 +49,6 @@ class ComposerStaticInitef970ef34ec5a4cbec2848bcff648cd2
         array (
             'Whoops\\' => 7,
             'Webmozart\\Assert\\' => 17,
-            'WebSocket\\' => 10,
         ),
         'T' => 
         array (
@@ -113,7 +112,6 @@ class ComposerStaticInitef970ef34ec5a4cbec2848bcff648cd2
         'N' => 
         array (
             'NunoMaduro\\Collision\\' => 21,
-            'NotificationChannels\\Discord\\' => 29,
         ),
         'M' => 
         array (
@@ -195,10 +193,6 @@ class ComposerStaticInitef970ef34ec5a4cbec2848bcff648cd2
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
-        ),
-        'WebSocket\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/textalk/websocket/lib',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
@@ -393,10 +387,6 @@ class ComposerStaticInitef970ef34ec5a4cbec2848bcff648cd2
         array (
             0 => __DIR__ . '/..' . '/nunomaduro/collision/src',
         ),
-        'NotificationChannels\\Discord\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/laravel-notification-channels/discord/src',
-        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
@@ -578,7 +568,6 @@ class ComposerStaticInitef970ef34ec5a4cbec2848bcff648cd2
         'App\\Models\\PostCategory' => __DIR__ . '/../..' . '/app/Models/PostCategory.php',
         'App\\Models\\PostImage' => __DIR__ . '/../..' . '/app/Models/PostImage.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
-        'App\\Notifications\\DiscordNotification' => __DIR__ . '/../..' . '/app/Notifications/DiscordNotification.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
@@ -3549,12 +3538,6 @@ class ComposerStaticInitef970ef34ec5a4cbec2848bcff648cd2
         'Nette\\Utils\\UnknownImageFileException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\Validators' => __DIR__ . '/..' . '/nette/utils/src/Utils/Validators.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
-        'NotificationChannels\\Discord\\Commands\\SetupCommand' => __DIR__ . '/..' . '/laravel-notification-channels/discord/src/Commands/SetupCommand.php',
-        'NotificationChannels\\Discord\\Discord' => __DIR__ . '/..' . '/laravel-notification-channels/discord/src/Discord.php',
-        'NotificationChannels\\Discord\\DiscordChannel' => __DIR__ . '/..' . '/laravel-notification-channels/discord/src/DiscordChannel.php',
-        'NotificationChannels\\Discord\\DiscordMessage' => __DIR__ . '/..' . '/laravel-notification-channels/discord/src/DiscordMessage.php',
-        'NotificationChannels\\Discord\\DiscordServiceProvider' => __DIR__ . '/..' . '/laravel-notification-channels/discord/src/DiscordServiceProvider.php',
-        'NotificationChannels\\Discord\\Exceptions\\CouldNotSendNotification' => __DIR__ . '/..' . '/laravel-notification-channels/discord/src/Exceptions/CouldNotSendNotification.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\Commands\\TestCommand' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/Commands/TestCommand.php',
         'NunoMaduro\\Collision\\Adapters\\Laravel\\ExceptionHandler' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php',
@@ -6563,21 +6546,6 @@ class ComposerStaticInitef970ef34ec5a4cbec2848bcff648cd2
         'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Rule' => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Rule.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
-        'WebSocket\\BadOpcodeException' => __DIR__ . '/..' . '/textalk/websocket/lib/BadOpcodeException.php',
-        'WebSocket\\BadUriException' => __DIR__ . '/..' . '/textalk/websocket/lib/BadUriException.php',
-        'WebSocket\\Base' => __DIR__ . '/..' . '/textalk/websocket/lib/Base.php',
-        'WebSocket\\Client' => __DIR__ . '/..' . '/textalk/websocket/lib/Client.php',
-        'WebSocket\\ConnectionException' => __DIR__ . '/..' . '/textalk/websocket/lib/ConnectionException.php',
-        'WebSocket\\Exception' => __DIR__ . '/..' . '/textalk/websocket/lib/Exception.php',
-        'WebSocket\\Message\\Binary' => __DIR__ . '/..' . '/textalk/websocket/lib/Message/Binary.php',
-        'WebSocket\\Message\\Close' => __DIR__ . '/..' . '/textalk/websocket/lib/Message/Close.php',
-        'WebSocket\\Message\\Factory' => __DIR__ . '/..' . '/textalk/websocket/lib/Message/Factory.php',
-        'WebSocket\\Message\\Message' => __DIR__ . '/..' . '/textalk/websocket/lib/Message/Message.php',
-        'WebSocket\\Message\\Ping' => __DIR__ . '/..' . '/textalk/websocket/lib/Message/Ping.php',
-        'WebSocket\\Message\\Pong' => __DIR__ . '/..' . '/textalk/websocket/lib/Message/Pong.php',
-        'WebSocket\\Message\\Text' => __DIR__ . '/..' . '/textalk/websocket/lib/Message/Text.php',
-        'WebSocket\\Server' => __DIR__ . '/..' . '/textalk/websocket/lib/Server.php',
-        'WebSocket\\TimeoutException' => __DIR__ . '/..' . '/textalk/websocket/lib/TimeoutException.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'Webmozart\\Assert\\InvalidArgumentException' => __DIR__ . '/..' . '/webmozart/assert/src/InvalidArgumentException.php',
         'Webmozart\\Assert\\Mixin' => __DIR__ . '/..' . '/webmozart/assert/src/Mixin.php',
