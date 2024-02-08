@@ -90,6 +90,25 @@
         }, 5000)
     }
 
+    const uploadDiscord = (url, image) => {
+        fetch('/tps-site/post/discord/media/webhook', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'url': url,
+                'image': image,
+            }),
+        })
+        .then((response) => response.json())
+        .then(res => {})
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
     // ユーザ
     const getUserData = () => {
         return new Promise((resolve, reject) => {
@@ -169,6 +188,7 @@
                 e.target.disabled = false
                 e.target.innerHTML = beforeButtonText
                 isNotificalText.value = '画像が投稿されました'
+                uploadDiscord(location.protocol + '//' + location.host + '/tps-site/storage/media/Image/' + res.responseData, location.protocol + '//' + location.host + '/tps-site/storage/media/Image/' + res.responseData)
             })
             .catch(error => {
                 console.log(error)

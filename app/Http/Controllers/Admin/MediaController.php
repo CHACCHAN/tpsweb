@@ -108,7 +108,7 @@ class MediaController extends Controller
                 'name' => $request->name,
             ]);
 
-            return response()->json([ 'responseData' => true ], 200);
+            return response()->json([ 'responseData' => $image_path ], 200);
         } catch(\Exception $e) {
             return response()->json([ 'responseData' => false ], 500);
         } 

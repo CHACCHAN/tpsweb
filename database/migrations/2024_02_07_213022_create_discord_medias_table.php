@@ -16,7 +16,8 @@ return new class extends Migration
             $table->boolean('auto_mode')->nullable();
             $table->boolean('notifical_link')->nullable();
             $table->boolean('paste_image')->nullable();
-            $table->longText('content');
+            $table->longText('content')->nullable();
+            $table->text('webhook')->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,12 @@ const routes = [
         component: () => import('./views/home/PostView.vue'),
         name: "post"
     },
+    // Image
+    {
+        path: "/image:pathMatch(.*)*",
+        component: () => import('./views/home/ImageView.vue'),
+        name: "image"
+    },
     // Auth
     {
         path: "/auth",

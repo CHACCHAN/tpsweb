@@ -15,5 +15,6 @@ class DiscordPost extends Model
         'auto_mode',
         'notifical_link',
         'content',
+        'webhook',
     ];
 }

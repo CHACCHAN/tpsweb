@@ -125,8 +125,15 @@ Route::get('/get/discord/media', function() { return response()->json([ 'respons
 Route::post('/post/discord/post', [DiscordController::class, 'updatePost']);
 // メディア設定の更新
 Route::post('/post/discord/media', [DiscordController::class, 'updateMedia']);
+// ポストWebhook
+Route::post('/post/discord/post/webhook', [DiscordController::class, 'PostWebhook']);
+// メディアWebhook
+Route::post('/post/discord/media/webhook', [DiscordController::class, 'MediaWebhook']);
 // Discordに投稿
 Route::post('/post/discord/send', [DiscordController::class, 'postDiscord']);
+
+// テスト
+Route::post('/test/discord', [DiscordController::class, 'PostWebhook']);
 
 // メール
 // メール送信

@@ -15,6 +15,8 @@
     const isClickedImage = ref(true)
     const isPostDatas = ref([])
     const isPostCategorys = ref([])
+    const isMediaGroups = ref([])
+    const isMedias = ref([])
 
     onMounted(() => {
         window.addEventListener('scroll', () => {
@@ -35,18 +37,21 @@
                 isClickedImage.value = true
             }
         })
-        getPosts()
+        getDatas()
     })
 
-    const getPosts = async() => {
+    const getDatas = async() => {
         const getPostDataPromise = getPostData()
         const getPostCategoryPromise = getPostCategory()
+        const getMediaGroupPromise = getMediaGroup()
+        const getMediaPromise = getMedia()
 
-        await Promise.all([getPostDataPromise, getPostCategoryPromise])
+        await Promise.all([getPostDataPromise, getPostCategoryPromise, getMediaGroupPromise, getMediaPromise])
         
         isLoading.value = false
     }
 
+    // ポスト
     const getPostData = () => {
         return new Promise((resolve, reject) => {
             fetch('/tps-site/get/postdata')
@@ -68,6 +73,37 @@
             .then((response) => response.json())
             .then(res => {
                 isPostCategorys.value = res.responseData
+                resolve()
+            })
+            .catch(error => {
+                console.log(error)
+                reject(error)
+            })
+        })
+    }
+
+    // メディア
+    const getMediaGroup = () => {
+        return new Promise((resolve, reject) => {
+            fetch('/tps-site/get/mediagroup')
+            .then((response) => response.json())
+            .then(res => {
+                isMediaGroups.value = res.responseData
+                resolve()
+            })
+            .catch(error => {
+                console.log(error)
+                reject(error)
+            })
+        })
+    }
+
+    const getMedia = () => {
+        return new Promise((resolve, reject) => {
+            fetch('/tps-site/get/media')
+            .then((response) => response.json())
+            .then(res => {
+                isMedias.value = res.responseData
                 resolve()
             })
             .catch(error => {
@@ -167,8 +203,9 @@
                                 <!-- トップメニュー -->
                                 <div class="col-3 text-light border-end border-secondary">
                                     <div class="rounded-3 p-3">
-                                        <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4">TPS Portal</div>
-                                        <router-link :to="{ name: 'home' }" id="clickItem" class="btn border-0 text-primary text-decoration-none rounded-pill">ホーム</router-link>
+                                        <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4 text-primary">HOME</div>
+                                        <router-link :to="{ name: 'home' }" id="clickItem" class="btn border-0 text-primary text-decoration-none rounded-pill">ホーム</router-link><br>
+                                        <router-link :to="{ name: 'image' }" id="clickItem" class="btn border-0 text-primary text-decoration-none rounded-pill">メディア</router-link>
                                     </div>
                                 </div>
                                 <!-- 自由投稿メニュー -->
@@ -208,8 +245,16 @@
                     <div class="position-absolute w-100 d-flex align-items-center justify-content-center">
                         <div id="listMenu" class="bg-dark p-2 rounded-3 shadow-lg" style="width: 65%;">
                             <div class="row">
-                                <!-- 写真集タブ -->
-                                <div class="col-12">
+                                <!-- トップメニュー -->
+                                <div class="col-3 text-light border-end border-secondary">
+                                    <div class="rounded-3 p-3">
+                                        <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4 text-primary">IMAGE</div>
+                                        <router-link :to="{ name: 'home' }" id="clickItem" class="btn border-0 text-primary text-decoration-none rounded-pill">ホーム</router-link><br>
+                                        <router-link :to="{ name: 'image' }" id="clickItem" class="btn border-0 text-primary text-decoration-none rounded-pill">メディア</router-link>
+                                    </div>
+                                </div>
+                                <!-- 投稿画像一覧 -->
+                                <div class="col-9">
                                     <div class="row">
                                         <div class="col-12 mt-5" v-if="isLoading">
                                             <div class="text-center text-light">
@@ -218,15 +263,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-3 mb-2" v-for="isPostCategory in isPostCategorys" :key="isPostCategory.id">
+                                        <div class="col-4 mb-2" v-for="isMediaGroup in isMediaGroups" :key="isMediaGroup.id">
                                             <div class="rounded-3 p-3 bg-light" v-if="!isLoading">
-                                                <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4 text-truncate" v-text="isPostCategory.category"></div>
-                                                <ul v-for="isPostData in isPostDatas" :key="isPostData.id" class="m-0">
-                                                    <li v-if="isPostCategory.id == isPostData.category_id && isPostData.public">
+                                                <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4 text-truncate" v-text="isMediaGroup.name"></div>
+                                                <ul v-for="isMedia in isMedias" :key="isMedia.id" class="m-0">
+                                                    <li v-if="isMediaGroup.id == isMedia.media_group_id">
                                                         <router-link
-                                                            :to="'/post/' + isPostCategory.category + '/' + isPostData.title"
+                                                            :to="'/image/' + isMediaGroup.name + '/' + isMedia.name"
                                                             class="btn border-0 text-primary fs-5 p-0 ps-2 text-decoration-underline text-truncate">
-                                                            {{ isPostData.title }}
+                                                            {{ isMedia.name }}
                                                         </router-link>
                                                     </li>
                                                 </ul>

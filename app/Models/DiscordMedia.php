@@ -16,5 +16,6 @@ class DiscordMedia extends Model
         'notifical_link',
         'paste_image',
         'content',
+        'webhook',
     ];
 }

@@ -11,15 +11,18 @@
     const isInputEmailSubject = ref()
     const isInputEmailContent = ref()
     const isInputEmailDisabled = ref(false)
+    const isDiscordInputPostWebhook = ref(null)
     const isDiscordInputPostContent = ref(null)
     const isDiscordCheckPostAutoMode = ref(null)
     const isDiscordCheckPostNotifical = ref(null)
+    const isDiscordInputMediaWebhook = ref(null)
     const isDiscordInputMediaContent = ref(null)
     const isDiscordCheckMediaAutoMode = ref(null)
     const isDiscordCheckMediaNotifical = ref(null)
     const isDiscordCheckMediaImage = ref(null)
     const isDiscordInputContent = ref(null)
     const isDiscordOnCookieChannelID = ref(null)
+    const isDiscordLoading = ref(false)
     const isNotificalText = ref()
 
     onMounted(() => {
@@ -102,6 +105,8 @@
         const getDiscordMediaPromise = getDiscordMedia()
         
         await Promise.all([getDiscordPostPromise, getDiscordMediaPromise])
+
+        isDiscordLoading.value = true
     }
 
     const getDiscordPost = () => {
@@ -112,6 +117,7 @@
                 isDiscordCheckPostAutoMode.value = Boolean(res.responseData.auto_mode)
                 isDiscordCheckPostNotifical.value = Boolean(res.responseData.notifical_link)
                 isDiscordInputPostContent.value = res.responseData.content
+                isDiscordInputPostWebhook.value = res.responseData.webhook
                 resolve()
             })
             .catch(error => {
@@ -130,6 +136,7 @@
                 isDiscordCheckMediaNotifical.value = Boolean(res.responseData.notifical_link)
                 isDiscordInputMediaContent.value = res.responseData.content
                 isDiscordCheckMediaImage.value = Boolean(res.responseData.paste_image)
+                isDiscordInputMediaWebhook.value = res.responseData.webhook
                 resolve()
             })
             .catch(error => {
@@ -143,7 +150,7 @@
         const DiscordInputPostContent = isDiscordInputPostContent.value
         const DiscordCheckPostAutoMode = isDiscordCheckPostAutoMode.value
         const DiscordCheckPostNotifical = isDiscordCheckPostNotifical.value
-
+        const DiscordInputPostWebhook = isDiscordInputPostWebhook.value
         
         fetch('/tps-site/post/discord/post', {
             method: 'POST',
@@ -154,7 +161,8 @@
             body: JSON.stringify({
                 content: DiscordInputPostContent,
                 auto_mode: DiscordCheckPostAutoMode,
-                notifical_link: DiscordCheckPostNotifical
+                notifical_link: DiscordCheckPostNotifical,
+                webhook: DiscordInputPostWebhook
             }),
         })
         .then((response) => response.json())
@@ -171,6 +179,7 @@
         const DiscordCheckMediaAutoMode = isDiscordCheckMediaAutoMode.value
         const DiscordCheckMediaNotifical = isDiscordCheckMediaNotifical.value
         const DiscordCheckMediaImage = isDiscordCheckMediaImage.value
+        const DiscordInputMediaWebhook = isDiscordInputMediaWebhook.value
 
         fetch('/tps-site/post/discord/media', {
             method: 'POST',
@@ -182,7 +191,8 @@
                 content: DiscordInputMediaContent,
                 auto_mode: DiscordCheckMediaAutoMode,
                 notifical_link: DiscordCheckMediaNotifical,
-                paste_image: DiscordCheckMediaImage
+                paste_image: DiscordCheckMediaImage,
+                webhook: DiscordInputMediaWebhook
             }),
         })
         .then((response) => response.json())
@@ -303,6 +313,7 @@
                     </div>
                 </div>
                 <!-- TPS Web to Discord -->
+                <!-- 読み込み用 -->
                 <div class="card mb-3">
                     <div class="card-header bg-light d-flex align-items-center justify-content-start" data-bs-toggle="collapse" data-bs-target="#DiscordCollapse" aria-expanded="true" aria-controls="DiscordCollapse">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
@@ -310,10 +321,22 @@
                         </svg>
                         <div class="h4 m-0 ms-2">TPS Web to Discord</div>
                     </div>
-                    <div class="collapse" :class="{ 'show': isShow }" id="DiscordCollapse">
+                    <!-- 読み込み前 -->
+                    <div class="collapse show" id="DiscordCollapse" v-if="!isDiscordLoading">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 読み込み後 -->
+                    <div class="collapse" :class="{ 'show': isShow }" id="DiscordCollapse" v-if="isDiscordLoading">
                         <div class="card-body">
                             <!-- 投稿フォーム -->
                             <div class="card card-body mb-3">
+                                <!-- コンテンツ -->
                                 <label for="toDiscordInputTextarea" class="form-label fw-bold">Discordに投稿する</label>
                                 <textarea 
                                     class="form-control mb-3" 
@@ -322,6 +345,7 @@
                                     placeholder="入力してください"
                                     v-model="isDiscordInputContent"
                                     @input="autoResizeHeightTextarea"></textarea>
+                                <!-- チャンネルID -->
                                 <label for="toDiscordFormSelect" class="form-label fw-bold">チャンネルID</label>
                                 <input 
                                     type="number" 
@@ -339,9 +363,24 @@
                             <!-- 投稿設定 -->
                             <div class="mb-3">
                                 <div class="text-secondary">投稿の設定</div>
+                                <!-- Webhook -->
+                                <div class="form-floating mb-3">
+                                    <input
+                                        type="text" 
+                                        class="form-control border-primary border-2" 
+                                        id="inputDiscordPostWebhook" 
+                                        placeholder="Leave a comment here" 
+                                        rows="1"
+                                        cols="1"
+                                        v-model="isDiscordInputPostWebhook" 
+                                        @change="updateDiscordPost()" />
+                                    <label for="inputDiscordPostWebhook">Webhook</label>
+                                </div>
+                                <!-- コンテンツ -->
                                 <textarea 
                                     class="form-control border-primary border-2" 
                                     style="resize: none; overflow: hidden; height: 43px;" 
+                                    placeholder="テキストを入力"
                                     v-model="isDiscordInputPostContent"
                                     @input="autoResizeHeightTextarea"
                                     @change="updateDiscordPost()"
@@ -367,9 +406,22 @@
                             <!-- メディア設定 -->
                             <div class="">
                                 <div class="text-secondary">メディア投稿の設定</div>
+                                <!-- Webhook -->
+                                <div class="form-floating mb-3">
+                                    <input
+                                        type="text" 
+                                        class="form-control border-primary border-2" 
+                                        id="inputDiscordMediaWebhook" 
+                                        placeholder="Leave a comment here" 
+                                        v-model="isDiscordInputMediaWebhook" 
+                                        @change="updateDiscordPost()" />
+                                    <label for="inputDiscordMediaWebhook">Webhook</label>
+                                </div>
+                                <!-- コンテンツ -->
                                 <textarea 
                                     class="form-control border-primary border-2" 
                                     style="resize: none; overflow: hidden; height: 43px;" 
+                                    placeholder="テキストを入力"
                                     v-model="isDiscordInputMediaContent"
                                     @input="autoResizeHeightTextarea"
                                     @change="updateDiscordMedia()"
