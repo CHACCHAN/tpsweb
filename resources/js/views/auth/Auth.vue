@@ -3,7 +3,7 @@
     import { useRouter } from 'vue-router'
     import RegisterComponent from '../../components/auth/RegisterComponent.vue'
     import LoginComponent from '../../components/auth/LoginComponent.vue'
-    import LoadingComponent from '../../components/loadingcomponent.vue'
+    import LoadingComponent from '../../components/LoadingComponent.vue'
     
     const router = useRouter()
     const isView = ref(false)

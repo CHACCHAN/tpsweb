@@ -68,7 +68,17 @@ class PostingController extends Controller
     // カテゴリの削除
     public function deleteCategory(Request $request)
     {
-        return response()->json([], 200);
+        // カテゴリIDの取得
+        foreach(Post::where('category_id', $request->id)->get() as $Post) {
+            foreach(PostImage::where('post_id', $Post->id)->get() as $PostImage) {
+                Storage::disk('public')->delete('postImage/' . $PostImage->image);
+                PostImage::where('id', $PostImage->id)->delete();
+            }
+            Post::where('id', $Post->id)->delete();
+        }
+        PostCategory::where('id', $request->id)->delete();
+
+        return response()->json([ 'responseData' => true ], 200);
     }
 
     // プロジェクト

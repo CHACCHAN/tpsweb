@@ -12,7 +12,26 @@ class DiscordController extends Controller
     // Discordに投稿
     public function postDiscord(Request $request)
     {
-        return response()->json([ 'responseData' => true ], 200);
+        try {          
+            $data = [
+                'username' => 'TPS™', 
+                'avatar_url' => asset('images/components/IconImage.png'),
+                'content' => $request->content,
+            ];
+            $options = [
+                'http' => [
+                    'method' => 'POST',
+                    'header' => 'Content-Type: application/json',
+                    'content' => json_encode($data)
+                ]
+            ];
+
+            file_get_contents($request->webhook, false, stream_context_create($options));
+
+            return response()->json([ 'responseData' => true ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
     }
 
     // Mediaの更新
@@ -87,6 +106,7 @@ class DiscordController extends Controller
             
             $data = [
                 'username' => 'TPS™', 
+                'avatar_url' => asset('images/components/IconImage.png'),
                 'content' => '新しい投稿が公開されました!',
                 'embeds' => [
                     [
@@ -143,6 +163,7 @@ class DiscordController extends Controller
             
             $data = [
                 'username' => 'TPS™', 
+                'avatar_url' => asset('images/components/IconImage.png'),
                 'content' => '画像が投稿されました!',
                 'embeds' => [
                     [

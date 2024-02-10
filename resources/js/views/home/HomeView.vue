@@ -1,5 +1,6 @@
 <script setup>
     import { ref, onMounted, onUnmounted } from 'vue'
+    import gsap from 'gsap'
     import TopHeader from '../../components/HeaderComponent.vue'
     import BottomFooter from '../../components/FooterComponent.vue'
 
@@ -15,6 +16,18 @@
     const isAPP_NAME = ref()
     const isLoginFlag = ref()
     const isAdminstrator = ref()
+
+    // GSAP
+    const tween = (el) => {
+        console.log(el)
+        gsap.set(el, {
+            duration: 0.5, // アニメーションの時間
+            paused: true, // 勝手にアニメーションが始まらないように
+            ease: "power2.out", // イージング
+            // アニメーションの終点
+            top: 0,
+        })
+    }
 
     onMounted(() => {
         getAPP_NAME()
@@ -93,7 +106,7 @@
         </div>
     </div>
     <!-- Component -->
-    
+    <div class="card card-body" @click="tween">Click!</div>
     
     <!-- Footer -->
     <BottomFooter :APP_NAME="isAPP_NAME" :LoginFlag="isLoginFlag" :Adminstrator="isAdminstrator" :IconImage="isIconImage" />

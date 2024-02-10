@@ -1,6 +1,6 @@
 <script setup>
     import { ref, onMounted, onUpdated, onUnmounted } from 'vue'
-    import LoadingComponent from '../../components/loadingcomponent.vue'
+    import LoadingComponent from '../../components/LoadingComponent.vue'
     import Cookie from 'js-cookie'
     import { QuillEditor } from '@vueup/vue-quill'
     import '@vueup/vue-quill/dist/vue-quill.snow.css'
@@ -47,6 +47,24 @@
     onUnmounted(() => {
         window.onbeforeunload = null
     })
+
+    const uploadDiscord = (url) => {
+        fetch('/tps-site/post/discord/post/webhook', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'url': url,
+            }),
+        })
+        .then((response) => response.json())
+        .then(res => {})
+        .catch(error => {
+            console.log(error)
+        })
+    }
 
     // プロジェクトAPI
     const moveProject = (toMoveProject) => {
@@ -176,8 +194,26 @@
     }
 
     // カテゴリAPI
-    const deleteCategory = () => {
-
+    const deleteCategory = (toCategoryID) => {
+        isLoading.value = true
+        fetch('/tps-site/post/postcategory/delete', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'id': toCategoryID,
+            }),
+        })
+        .then((response) => response.json())
+        .then(res => {
+            getPosts()
+            isLoading.value = false
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
 
     const createCategory = () => {
@@ -320,6 +356,9 @@
         })
         .then((response) => response.json())
         .then(res => {
+            if(isClickedProjectPublic.value) {
+                uploadDiscord(location.protocol + '//' + location.host + '/tps-site/post/' + isClickedCategoryTitle.value + '/' + isClickedProjectTitle.value)
+            }
         })
         .catch(error => {
             console.log(error)
@@ -505,7 +544,7 @@
                                             </div>
                                             <div class="text-secondary mt-1">カテゴリ内のプロジェクトはすべて削除されます</div>
                                             <div class="text-end mt-5">
-                                                <button type="button" class="btn btn-danger rounded-pill">Delete</button>
+                                                <button type="button" class="btn btn-danger rounded-pill" @click="deleteCategory(isPostCategory.id)" data-bs-dismiss="modal">Delete</button>
                                             </div>
                                         </div>
                                     </div>

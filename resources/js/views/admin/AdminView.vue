@@ -1,7 +1,7 @@
 <script setup>
     import { ref, onMounted } from 'vue'
     import { useRouter } from 'vue-router'
-    import LoadingComponent from '../../components/loadingcomponent.vue'
+    import LoadingComponent from '../../components/LoadingComponent.vue'
     import HomeComponent from '../../components/admin/HomeComponent.vue'
     import ReleaseComponent from '../../components/admin/ReleaseComponent.vue'
     import PostingComponent from '../../components/admin/PostingComponent.vue'
@@ -121,11 +121,8 @@
                         </svg>
                         <div class="ms-3">ダッシュボード</div>
                     </div>
-                    <button type="button" class="btn rounded-0 text-light text-start px-5" style="background: rgb(51, 48, 48);" data-bs-toggle="collapse" data-bs-target="#collapseDashBoard" aria-expanded="true" aria-controls="collapseDashBoard">
+                    <button type="button" class="btn rounded-0 text-light text-start px-5 dropdown-toggle" style="background: rgb(51, 48, 48);" data-bs-toggle="collapse" data-bs-target="#collapseDashBoard" aria-expanded="true" aria-controls="collapseDashBoard">
                         ダッシュボードメニュー
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                        </svg>
                     </button>
                     <div class="collapse show" id="collapseDashBoard">
                         <div class="py-3 mb-3 text-bg-secondary px-5">
@@ -141,6 +138,7 @@
                             </a>
                         </div>
                     </div>
+                    <!-- 設定メニュー -->
                     <div class="mb-3">
                         <div v-for="webSetting in webSettings" :key="webSetting">
                             <a :href="'#view=' + webSetting.settingTitle" id="clickMenuItem" class="list-group-item text-bg-dark border-0 rounded-3 p-1 ps-3 mb-2 mx-5" :class="{ 'clicked': isSelectWeb[webSetting.id] }" @click="selectWeb(webSetting.id); changeTitle(webSetting.settingTitle);">

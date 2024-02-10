@@ -188,7 +188,7 @@
                 e.target.disabled = false
                 e.target.innerHTML = beforeButtonText
                 isNotificalText.value = '画像が投稿されました'
-                uploadDiscord(location.protocol + '//' + location.host + '/tps-site/storage/media/Image/' + res.responseData, location.protocol + '//' + location.host + '/tps-site/storage/media/Image/' + res.responseData)
+                uploadDiscord(location.protocol + '//' + location.host + '/tps-site/image/' + inputData, location.protocol + '//' + location.host + '/tps-site/storage/media/Image/' + res.responseData)
             })
             .catch(error => {
                 console.log(error)

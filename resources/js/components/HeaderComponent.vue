@@ -269,7 +269,7 @@
                                                 <ul v-for="isMedia in isMedias" :key="isMedia.id" class="m-0">
                                                     <li v-if="isMediaGroup.id == isMedia.media_group_id">
                                                         <router-link
-                                                            :to="'/image/' + isMediaGroup.name + '/' + isMedia.name"
+                                                            :to="'/image/' + isMediaGroup.name"
                                                             class="btn border-0 text-primary fs-5 p-0 ps-2 text-decoration-underline text-truncate">
                                                             {{ isMedia.name }}
                                                         </router-link>

@@ -1,14 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\Admin\QuillController;
 use App\Http\Controllers\Admin\PostingController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\PickUpController;
 use App\Http\Controllers\DiscordController;
 use App\Models\User;
+use App\Models\PickUp;
 use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\Media;
@@ -39,8 +42,11 @@ Route::get('/auth/logout', [UserController::class, 'logout']);
 
 // API
 // APP_NAMEの取得
-Route::get('/get/env', function() {return response()->json(['ResponseData' => config('app.name')], 200);});
-
+Route::get('/get/env', function() { return response()->json([ 'ResponseData' => config('app.name') ], 200);});
+// Laravelバージョン取得
+Route::get('/get/env/laravel', function() { return response()->json([ 'responseData' => Application::VERSION ], 200);});
+// PHPバージョン取得
+Route::get('/get/env/php', function() { return response()->json([ 'responseData' => PHP_VERSION ], 200);});
 // ログイン状況取得
 Route::get('/auth/login/check', function() {
     try {
@@ -66,55 +72,20 @@ Route::get('/auth/login/check', function() {
 });
 
 // ユーザIDとユーザネームを取得
-Route::get('/auth/get', function() { return response()->json([ 'responseData' => User::get(['id', 'name']) ], 200); });
+Route::get('/auth/get', function() { return response()->json([ 'responseData' => User::get(['id', 'name']) ], 200);});
 
-// Admin Posting
-// カテゴリ
-// カテゴリの新規作成
-Route::post('/post/postcategory/create', [PostingController::class, 'makeNewCategory']);
-// カテゴリのタイトル更新
-Route::post('/post/postcategory/update', [PostingController::class, 'updateCategoryTitle']);
-
-// プロジェクト
-// プロジェクトの新規作成
-Route::post('/post/postdata/create', [PostingController::class, 'makeNewProject']);
-// プロジェクトのタイトル更新
-Route::post('/post/postdata/update', [PostingController::class, 'updateProjectTitle']);
-// プロジェクトの削除
-Route::post('/post/postdata/delete', [PostingController::class, 'deleteProject']);
-// プロジェクトの移動
-Route::post('/post/postdata/move', [PostingController::class, 'moveProject']);
-// プロジェクトの複製
-Route::post('/post/postdata/copy', [PostingController::class, 'copyProject']);
-// プロジェクトの公開設定更新
-Route::post('/post/postdata/public', [PostingController::class, 'updateProjectPublic']);
-
-// 投稿データの取得
-Route::get('/get/postdata', function() {return response()->json(['responseData' => Post::get()], 200);});
-// 投稿データのカテゴリの取得
-Route::get('/get/postcategory', function() {return response()->json(['responseData' => PostCategory::get()], 200);});
-// 投稿データの一時画像の削除
-Route::post('/post/postdata/image/remove', [QuillController::class, 'removeImageTemp']);
-// 投稿データの正版画像の保存
-Route::post('/post/postdata/image', [QuillController::class, 'saveImage']);
-// 投稿データのコンテンツ保存
-Route::post('/post/postdata/content', [QuillController::class, 'saveContent']);
-
-// Admin Media
-// メディアグループ取得
-Route::get('/get/mediagroup', function() {return response()->json(['responseData' => MediaGroup::latest()->get()], 200);});
-// メディア取得
-Route::get('/get/media', function() {return response()->json(['responseData' => Media::latest()->get()], 200);});
-// メディアグループ作成
-Route::post('/post/mediagroup/create', [MediaController::class, 'makeNewMediaGroup']);
-// メディアグループ更新
-Route::post('/post/mediagroup/update', [MediaController::class, 'updateMediaGroup']);
-// メディアグループ削除
-Route::post('/post/mediagroup/delete', [MediaController::class, 'deleteMediaGroup']);
-// メディア投稿
-Route::post('/post/media/upload', [MediaController::class, 'uploadMedia']);
-// メディア削除
-Route::post('/post/media/delete', [MediaController::class, 'deleteMedia']);
+// Admin Home
+// ピックアップ
+// ピックアップ取得
+Route::get('/get/pickup', function(){ return response()->json([ 'responseData' => PickUp::get() ], 200);});
+// ピックアップDB数取得
+Route::get('/get/pickup/sumCount', function(){ return response()->json([ 'responseData' => PickUp::count() ], 200);});
+// ピックアップ条件取得
+Route::post('/post/pickup/focus', [PickUpController::class, 'getPickUp']);
+// ピックアップ作成
+Route::post('/post/pickup/create', [PickUpController::class, 'makePickUp']);
+// ピックアップ削除
+Route::post('/post/pickup/delete', [PickUpController::class, 'deletePickUp']);
 
 // Discord
 // ポスト設定の取得
@@ -132,8 +103,55 @@ Route::post('/post/discord/media/webhook', [DiscordController::class, 'MediaWebh
 // Discordに投稿
 Route::post('/post/discord/send', [DiscordController::class, 'postDiscord']);
 
-// テスト
-Route::post('/test/discord', [DiscordController::class, 'PostWebhook']);
+// Admin Posting
+// カテゴリ
+// カテゴリの新規作成
+Route::post('/post/postcategory/create', [PostingController::class, 'makeNewCategory']);
+// カテゴリのタイトル更新
+Route::post('/post/postcategory/update', [PostingController::class, 'updateCategoryTitle']);
+// カテゴリの削除
+Route::post('/post/postcategory/delete', [PostingController::class, 'deleteCategory']);
+
+// プロジェクト
+// プロジェクトの新規作成
+Route::post('/post/postdata/create', [PostingController::class, 'makeNewProject']);
+// プロジェクトのタイトル更新
+Route::post('/post/postdata/update', [PostingController::class, 'updateProjectTitle']);
+// プロジェクトの削除
+Route::post('/post/postdata/delete', [PostingController::class, 'deleteProject']);
+// プロジェクトの移動
+Route::post('/post/postdata/move', [PostingController::class, 'moveProject']);
+// プロジェクトの複製
+Route::post('/post/postdata/copy', [PostingController::class, 'copyProject']);
+// プロジェクトの公開設定更新
+Route::post('/post/postdata/public', [PostingController::class, 'updateProjectPublic']);
+
+// 投稿データの取得
+Route::get('/get/postdata', function() { return response()->json(['responseData' => Post::get()], 200);});
+// 投稿データのカテゴリの取得
+Route::get('/get/postcategory', function() { return response()->json(['responseData' => PostCategory::get()], 200);});
+// 投稿データの一時画像の削除
+Route::post('/post/postdata/image/remove', [QuillController::class, 'removeImageTemp']);
+// 投稿データの正版画像の保存
+Route::post('/post/postdata/image', [QuillController::class, 'saveImage']);
+// 投稿データのコンテンツ保存
+Route::post('/post/postdata/content', [QuillController::class, 'saveContent']);
+
+// Admin Media
+// メディアグループ取得
+Route::get('/get/mediagroup', function() { return response()->json(['responseData' => MediaGroup::latest()->get()], 200);});
+// メディア取得
+Route::get('/get/media', function() { return response()->json(['responseData' => Media::latest()->get()], 200);});
+// メディアグループ作成
+Route::post('/post/mediagroup/create', [MediaController::class, 'makeNewMediaGroup']);
+// メディアグループ更新
+Route::post('/post/mediagroup/update', [MediaController::class, 'updateMediaGroup']);
+// メディアグループ削除
+Route::post('/post/mediagroup/delete', [MediaController::class, 'deleteMediaGroup']);
+// メディア投稿
+Route::post('/post/media/upload', [MediaController::class, 'uploadMedia']);
+// メディア削除
+Route::post('/post/media/delete', [MediaController::class, 'deleteMedia']);
 
 // メール
 // メール送信
