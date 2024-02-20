@@ -19,6 +19,18 @@ const routes = [
         component: () => import('./views/home/ImageView.vue'),
         name: "image"
     },
+    // News
+    {
+        path: "/news",
+        component: () => import('./views/home/NewsView.vue'),
+        name: "news"
+    },
+    // Contact
+    {
+        path: "/contact",
+        component: () => import('./views/home/ContactView.vue'),
+        name: "contact"
+    },
     // Auth
     {
         path: "/auth",
@@ -33,14 +45,37 @@ const routes = [
                 path: "/auth/login",
                 component: () => import('./views/auth/Auth.vue'),
                 name: 'login'
-            }
+            },
         ]
+    },
+    // プロフィール
+    {
+        path: "/auth/profile",
+        component: () => import('./components/auth/ProfileComponent.vue'),
+        name: 'profile'
     },
     // Admin
     {
         path: "/admin",
         component: () => import('./views/admin/AdminView.vue'),
         name: 'admin'
+    },
+    // フッターコンテンツ
+    {
+        path: "/footer",
+        component: () => import('./views/footer/LayoutView.vue'),
+        children: [
+            {
+                path: "/footer/licence",
+                component: () => import('./views/footer/LayoutView.vue'),
+                name: 'licence'
+            },
+            {
+                path: "/footer/privacy_policy",
+                component: () => import('./views/footer/LayoutView.vue'),
+                name: 'privacy_policy'
+            }
+        ]
     },
     // 例外処理
     {

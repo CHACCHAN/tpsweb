@@ -800,7 +800,7 @@
             <div class="modal" id="mediaPopupModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-centered">
                     <div class="modal-content text-bg-dark border">
-                        <img :src="'/tps-site/storage/media/Image/' + isClickedMediaImage" class="rounded-3" witdh="100%" alt="">
+                        <img :src="'/tps-site/storage/media/Image/' + isClickedMediaImage" class="rounded-2" witdh="100%" alt="">
                     </div>
                 </div>
             </div>

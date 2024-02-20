@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use App\Models\DiscordMedia;
 use App\Models\DiscordPost;
+use App\Models\DiscordContact;
 
 class DiscordController extends Controller
 {
@@ -27,6 +28,88 @@ class DiscordController extends Controller
             ];
 
             file_get_contents($request->webhook, false, stream_context_create($options));
+
+            return response()->json([ 'responseData' => true ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
+    }
+
+    // Postの取得
+    public function getPost()
+    {
+        try {
+            if(!DiscordPost::where('id', 1)->exists()) {
+                DiscordPost::create([
+                    'auto_mode' => false,
+                    'notifical_link' => false,
+                    'content' => null,
+                    'webhook' => null,
+                ]);
+            }
+
+            return response()->json([ 'responseData' => DiscordPost::first() ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
+    }
+
+    // Mediaの取得
+    public function getMedia()
+    {
+        try {
+            if(!DiscordMedia::where('id', 1)->exists()) {
+                DiscordMedia::create([
+                    'auto_mode' => false,
+                    'notifical_link' => false,
+                    'paste_image' => false,
+                    'content' => null,
+                    'webhook' => null,
+                ]);
+            }
+
+            return response()->json([ 'responseData' => DiscordMedia::first() ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
+    }
+
+    // Contactの取得
+    public function getContact()
+    {
+        try {
+            if(!DiscordContact::where('id', 1)->exists()) {
+                DiscordContact::create([
+                    'auto_mode' => false,
+                    'webhook' => null,
+                ]);
+            }
+
+            return response()->json([ 'responseData' => DiscordContact::first() ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
+    }
+
+    // Postの更新
+    public function updatePost(Request $request)
+    {
+        try {
+            if(DiscordPost::where('id', 1)->exists()) {
+                DiscordPost::where('id', 1)->update([
+                    'auto_mode' => $request->auto_mode,
+                    'notifical_link' => $request->notifical_link,
+                    'content' => $request->content,
+                    'webhook' => $request->webhook,
+                ]);
+            } else {
+                DiscordPost::create([
+                    'auto_mode' => $request->auto_mode,
+                    'notifical_link' => $request->notifical_link,
+                    'content' => $request->content,
+                    'webhook' => $request->webhook,
+                ]);
+            }
 
             return response()->json([ 'responseData' => true ], 200);
         } catch(\Exception $e) {
@@ -62,22 +145,18 @@ class DiscordController extends Controller
         }
     }
 
-    // Postの更新
-    public function updatePost(Request $request)
+    // Contactの更新
+    public function updateContact(Request $request)
     {
         try {
-            if(DiscordPost::where('id', 1)->exists()) {
-                DiscordPost::where('id', 1)->update([
+            if(DiscordContact::where('id', 1)->exists()) {
+                DiscordContact::where('id', 1)->update([
                     'auto_mode' => $request->auto_mode,
-                    'notifical_link' => $request->notifical_link,
-                    'content' => $request->content,
                     'webhook' => $request->webhook,
                 ]);
             } else {
-                DiscordPost::create([
+                DiscordContact::create([
                     'auto_mode' => $request->auto_mode,
-                    'notifical_link' => $request->notifical_link,
-                    'content' => $request->content,
                     'webhook' => $request->webhook,
                 ]);
             }
@@ -180,7 +259,7 @@ class DiscordController extends Controller
                             'url' => $setting['image']
                         ],
                         'thumbnail' => [
-                            'url' => 'https://picsum.photos/480/480' //asset('images/components/IconImage.png')
+                            'url' => asset('images/components/IconImage.png')
                         ]
                     ],
                 ]
@@ -194,6 +273,52 @@ class DiscordController extends Controller
             ];
 
             file_get_contents($DiscordMediaData->webhook, false, stream_context_create($options));
+
+            return response()->json([ 'responseData' => true ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
+    }
+
+    // ContactWebhook
+    public function ContactWebhook(Request $request)
+    {
+        try {
+            $DiscordContactData = DiscordContact::first();
+
+            if(!$DiscordContactData->auto_mode) {
+                return response()->json([ 'responseData' => false ], 200);
+            }
+            
+            $data = [
+                'username' => 'TPS™', 
+                'avatar_url' => asset('images/components/IconImage.png'),
+                'content' => '問い合わせを受け付けました',
+                'embeds' => [
+                    [
+                        'title' => $request->subject,
+                        'description' => $request->content,
+                        'timestamp' => Date::now(),
+                        'color' => 1127128,
+                        'footer' => [
+                            // © 2021-XXXX TPS By CHACCHAN SYSTEM
+                            'text' => '©' . ' 2021-' . Date::now()->format('Y') . ' ' . config('app.name') . ' By CHACCHAN SYSTEM'
+                        ],
+                        'thumbnail' => [
+                            'url' => asset('images/components/IconImage.png')
+                        ]
+                    ],
+                ]
+            ];
+            $options = [
+                'http' => [
+                    'method' => 'POST',
+                    'header' => 'Content-Type: application/json',
+                    'content' => json_encode($data)
+                ]
+            ];
+
+            file_get_contents($DiscordContactData->webhook, false, stream_context_create($options));
 
             return response()->json([ 'responseData' => true ], 200);
         } catch(\Exception $e) {

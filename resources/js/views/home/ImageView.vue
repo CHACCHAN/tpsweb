@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, onMounted, onUpdated, onUnmounted } from 'vue'
+    import { ref, watch, onMounted, onUpdated, onUnmounted } from 'vue'
     import { useRouter } from 'vue-router'
     import VanillaTilt from 'vanilla-tilt'
     import LoadingComponent from '../../components/LoadingComponent.vue'
@@ -8,6 +8,10 @@
     import BottomFooter from '../../components/FooterComponent.vue'
 
     const router = useRouter()
+
+    watch(() => router.currentRoute.value.path, () => {
+        getData()
+    })
     const isLoading = ref(true)
     const defaultTitle = 'メディア'
     const documentTitle = ref(defaultTitle)
@@ -157,89 +161,91 @@
 </script>
 
 <template>
-    <LoadingComponent v-if="isLoading" />
-    <!-- Header -->
-    <TopHeader :APP_NAME="isAPP_NAME" :LoginFlag="isLoginFlag" :Adminstrator="isAdminstrator" :IconImage="isIconImage" style="padding-bottom: 60px;" @click="linkPost()" />
-    <div v-if="!isLoading">
-        <div class="container-fluid">
-            <!-- メディアグループ一覧 -->
-            <div class="row" v-if="!clickedMediaGroupID">
-                <div class="col-6 col-md-3" v-for="isMediaGroup in isMediaGroups" :key="isMediaGroup.id" style="cursor: pointer;">
-                    <div 
-                        class="position-relative mb-3" 
-                        :class="{ tiltElm: isTiltView }" 
-                        @mouseenter="isViewChange[isMediaGroup.id] = true" 
-                        @mouseout="isViewChange[isMediaGroup.id] = false"
-                        @click="
-                                clickedMediaGroupID = isMediaGroup.id,
-                                clickedMediaGroupName = isMediaGroup.name,
-                                router.push('image/' + isMediaGroup.name),
-                                documentTitle = isMediaGroup.name,
-                                getFilterMedia(isMediaGroup.id)
-                            ">
-                        <img 
-                            :src="'/tps-site/storage/media/groupImage/' + isMediaGroup.image" 
-                            class="rounded-3" 
-                            width="100%" 
-                            style="box-shadow: 0 0 10px black;"
-                            v-if="isMediaGroup.image"
-                            loading="lazy" />
-                        <img 
-                            :src="'/tps-site/images/components/defaultMediaImage.jpg'" 
-                            class="rounded-3" 
-                            width="100%" 
-                            style="box-shadow: 0 0 10px black;"
-                            v-if="!isMediaGroup.image"
-                            loading="lazy" />
-                        <div class="position-absolute w-100 h-100 top-0 d-flex align-items-center justify-content-center">
-                            <div class="h5 fw-bold text-truncate text-light" style="text-shadow: 0 0 10px black;" v-text="isMediaGroup.name"></div>
-                        </div>
-                        <div class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center" style="top: 30px; text-shadow: 0 0 10px black;">
-                            <div class="text-light" :class="{ 'd-none': !isViewChange[isMediaGroup.id] }" v-if="isTiltView">クリック</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- メディア一覧 -->
-            <div class="row" v-if="clickedMediaGroupID">
-                <!-- メニュー -->
-                <div class="col-12">
-                    <div class="d-flex align-items-center justify-content-start mb-3">
-                        <button 
-                            type="button" 
-                            class="btn btn-primary text-light py-1 rounded-pill" 
+    <div id="backImage">
+        <LoadingComponent v-if="isLoading" />
+        <!-- Header -->
+        <TopHeader :APP_NAME="isAPP_NAME" :LoginFlag="isLoginFlag" :Adminstrator="isAdminstrator" :IconImage="isIconImage" style="padding-bottom: 60px;" @click="linkPost()" />
+        <div v-if="!isLoading">
+            <div class="container-fluid">
+                <!-- メディアグループ一覧 -->
+                <div class="row" v-if="!clickedMediaGroupID">
+                    <div class="col-6 col-md-3" v-for="isMediaGroup in isMediaGroups" :key="isMediaGroup.id" style="cursor: pointer;">
+                        <div 
+                            class="position-relative mb-3" 
+                            :class="{ tiltElm: isTiltView }" 
+                            @mouseenter="isViewChange[isMediaGroup.id] = true" 
+                            @mouseout="isViewChange[isMediaGroup.id] = false"
                             @click="
-                                clickedMediaGroupID = !clickedMediaGroupID,
-                                documentTitle = defaultTitle,
-                                router.push('/image')
-                            ">戻る
-                        </button>
-                        <div class="h4 m-0 fw-bold text-light ms-2" v-text="clickedMediaGroupName"></div>
+                                    clickedMediaGroupID = isMediaGroup.id,
+                                    clickedMediaGroupName = isMediaGroup.name,
+                                    router.push('image/' + isMediaGroup.name),
+                                    documentTitle = isMediaGroup.name,
+                                    getFilterMedia(isMediaGroup.id)
+                                ">
+                            <img 
+                                :src="'/tps-site/storage/media/groupImage/' + isMediaGroup.image" 
+                                class="rounded-3" 
+                                width="100%" 
+                                style="box-shadow: 0 0 10px black;"
+                                v-if="isMediaGroup.image"
+                                loading="lazy" />
+                            <img 
+                                :src="'/tps-site/images/components/defaultMediaImage.jpg'" 
+                                class="rounded-3" 
+                                width="100%" 
+                                style="box-shadow: 0 0 10px black;"
+                                v-if="!isMediaGroup.image"
+                                loading="lazy" />
+                            <div class="position-absolute w-100 h-100 top-0 d-flex align-items-center justify-content-center">
+                                <div class="h5 fw-bold text-truncate text-light" style="text-shadow: 0 0 10px black;" v-text="isMediaGroup.name"></div>
+                            </div>
+                            <div class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center" style="top: 30px; text-shadow: 0 0 10px black;">
+                                <div class="text-light" :class="{ 'd-none': !isViewChange[isMediaGroup.id] }" v-if="isTiltView">クリック</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- 一覧 -->
-                <div class="col-6 col-md-3" v-for="isMediaFilted in isMediasFilted" :key="isMediaFilted.id">
-                    <div 
-                        id="clickMenuItem" 
-                        class="card text-bg-dark border-0 mb-3" 
-                        style="cursor: pointer;" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#zoomMediaModal"
-                        @click="
-                            isClickedMediaName = isMediaFilted.name,
-                            isClickedMediaImage = isMediaFilted.image
-                        ">
-                        <img :src="'/tps-site/storage/media/Image/' + isMediaFilted.image" class="rounded-2" width="100%" loading="lazy" />
-                        <div class="card-body p-0">
-                            <div class="h5 m-0 text-center text-truncate fw-bold" v-text="isMediaFilted.name"></div>
+                <!-- メディア一覧 -->
+                <div class="row" v-if="clickedMediaGroupID">
+                    <!-- メニュー -->
+                    <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-start mb-3">
+                            <button 
+                                type="button" 
+                                class="btn btn-primary text-light py-1 rounded-pill" 
+                                @click="
+                                    clickedMediaGroupID = !clickedMediaGroupID,
+                                    documentTitle = defaultTitle,
+                                    router.push('/image')
+                                ">戻る
+                            </button>
+                            <div class="h4 m-0 fw-bold text-light ms-2" v-text="clickedMediaGroupName"></div>
+                        </div>
+                    </div>
+                    <!-- 一覧 -->
+                    <div class="col-6 col-md-3" v-for="isMediaFilted in isMediasFilted" :key="isMediaFilted.id">
+                        <div 
+                            id="clickMenuItem" 
+                            class="card text-bg-dark border-0 mb-3" 
+                            style="cursor: pointer;" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#zoomMediaModal"
+                            @click="
+                                isClickedMediaName = isMediaFilted.name,
+                                isClickedMediaImage = isMediaFilted.image
+                            ">
+                            <img :src="'/tps-site/storage/media/Image/' + isMediaFilted.image" class="rounded-2" width="100%" loading="lazy" />
+                            <div class="card-body p-0">
+                                <div class="h5 m-0 text-center text-truncate fw-bold" v-text="isMediaFilted.name"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Footer -->
+        <BottomFooter :APP_NAME="isAPP_NAME" :LoginFlag="isLoginFlag" :Adminstrator="isAdminstrator" :IconImage="isIconImage" />
     </div>
-    <!-- Footer -->
-    <BottomFooter :APP_NAME="isAPP_NAME" :LoginFlag="isLoginFlag" :Adminstrator="isAdminstrator" :IconImage="isIconImage" />
 
 
 
@@ -247,7 +253,7 @@
     <div class="modal" id="zoomMediaModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content text-bg-dark border">
-                <img :src="'/tps-site/storage/media/Image/' + isClickedMediaImage" class="rounded-4 rounded-bottom-0" width="100%" loading="lazy">
+                <img :src="'/tps-site/storage/media/Image/' + isClickedMediaImage" class="rounded-3 rounded-bottom-0" width="100%" loading="lazy">
                 <div class="modal-body py-2">
                     <div class="row">
                         <div class="col-11 d-flex align-items-center justify-content-start">
@@ -275,6 +281,18 @@
 </template>
 
 <style scoped>
+    #backImage {
+        background-image:
+        linear-gradient(
+        rgba(0,0,0,0.5), 
+        rgba(0,0,0,0.5)
+        ),
+        url(https://picsum.photos/1920/1080);
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+    }
     #clickItem:hover {
         background: #3d3d3d;
     }

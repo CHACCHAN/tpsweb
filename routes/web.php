@@ -9,7 +9,10 @@ use App\Http\Controllers\Admin\QuillController;
 use App\Http\Controllers\Admin\PostingController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\PickUpController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\DiscordController;
+use App\Http\Controllers\ViewCountController;
+use App\Http\Controllers\UserBanController;
 use App\Models\User;
 use App\Models\PickUp;
 use App\Models\Post;
@@ -18,6 +21,9 @@ use App\Models\Media;
 use App\Models\MediaGroup;
 use App\Models\DiscordMedia;
 use App\Models\DiscordPost;
+use App\Models\DiscordContact;
+use App\Models\ViewCount;
+use App\Models\UserBanList;
 use GuzzleHttp\Psr7\Query;
 
 /*
@@ -35,10 +41,20 @@ use GuzzleHttp\Psr7\Query;
 Route::post('/auth/register', [UserController::class, 'emailAuther']);
 // 新規登録
 Route::post('/auth/register/create', [UserController::class, 'register']);
+// 更新
+Route::post('/auth/update', [UserController::class, 'updateUser']);
 // ログイン
 Route::post('/auth/login', [UserController::class, 'login']);
 // ログアウト
 Route::get('/auth/logout', [UserController::class, 'logout']);
+// ユーザ管理者を変更
+Route::post('/auth/change/admin', [UserController::class, 'changeUserAdmin']);
+// ユーザBANを変更
+Route::post('/auth/change/ban', [UserController::class, 'changeUserBan']);
+// ユーザ削除
+Route::post('/auth/delete', [UserController::class, 'deleteUser']);
+// ユーザ検索結果を取得
+Route::post('/auth/search', [UserController::class, 'searchUser']);
 
 // API
 // APP_NAMEの取得
@@ -70,14 +86,24 @@ Route::get('/auth/login/check', function() {
         ], 401);
     }
 });
+// 公式Email取得
+Route::get('/get/env/email', function() { return response()->json([ 'responseData' => config('mail.from.address') ], 200);});
 
 // ユーザIDとユーザネームを取得
 Route::get('/auth/get', function() { return response()->json([ 'responseData' => User::get(['id', 'name']) ], 200);});
 
+// ユーザデータを取得
+Route::post('/post/user/get', [UserController::class, 'getUserData']);
+// ユーザデータ条件取得
+Route::post('/post/user/get/focus', [UserController::class, 'getUserFocus']);
+// ユーザ利用停止データ条件取得
+Route::post('/post/user/ban/get/focus', [UserController::class, 'getUserBanFocus']);
+
+
 // Admin Home
 // ピックアップ
 // ピックアップ取得
-Route::get('/get/pickup', function(){ return response()->json([ 'responseData' => PickUp::get() ], 200);});
+Route::get('/get/pickup', function(){ return response()->json([ 'responseData' => PickUp::latest()->get() ], 200);});
 // ピックアップDB数取得
 Route::get('/get/pickup/sumCount', function(){ return response()->json([ 'responseData' => PickUp::count() ], 200);});
 // ピックアップ条件取得
@@ -87,21 +113,39 @@ Route::post('/post/pickup/create', [PickUpController::class, 'makePickUp']);
 // ピックアップ削除
 Route::post('/post/pickup/delete', [PickUpController::class, 'deletePickUp']);
 
+// コンタクト
+// コンタクト送信
+Route::post('/post/contact/send', [ContactController::class, 'sendContact']);
+// コンタクト受付確認送信
+Route::post('/post/contact/reception', [ContactController::class, 'receptionContact']);
+
 // Discord
 // ポスト設定の取得
-Route::get('/get/discord/post', function() { return response()->json([ 'responseData' => DiscordPost::first() ]);});
+Route::get('/get/discord/post', [DiscordController::class, 'getPost']);
 // メディア設定の取得
-Route::get('/get/discord/media', function() { return response()->json([ 'responseData' => DiscordMedia::first() ]);});
+Route::get('/get/discord/media', [DiscordController::class, 'getMedia']);
+// コンタクト設定の取得
+Route::get('/get/discord/contact', [DiscordController::class, 'getContact']);
 // ポスト設定の更新
 Route::post('/post/discord/post', [DiscordController::class, 'updatePost']);
 // メディア設定の更新
 Route::post('/post/discord/media', [DiscordController::class, 'updateMedia']);
+// コンタクト設定の更新
+Route::post('/post/discord/contact', [DiscordController::class, 'updateContact']);
 // ポストWebhook
 Route::post('/post/discord/post/webhook', [DiscordController::class, 'PostWebhook']);
 // メディアWebhook
 Route::post('/post/discord/media/webhook', [DiscordController::class, 'MediaWebhook']);
+// コンタクトWebhook
+Route::post('/post/discord/contact/webhook', [DiscordController::class, 'ContactWebhook']);
 // Discordに投稿
 Route::post('/post/discord/send', [DiscordController::class, 'postDiscord']);
+
+// 閲覧カウント
+// 閲覧の開始
+Route::post('/post/view/count/start', [ViewCountController::class, 'addViewCount']);
+// 閲覧状況の取得
+Route::get('/get/view/count', function() { return response()->json([ 'responseData' => ViewCount::latest()->first() ], 200); });
 
 // Admin Posting
 // カテゴリ
@@ -139,9 +183,11 @@ Route::post('/post/postdata/content', [QuillController::class, 'saveContent']);
 
 // Admin Media
 // メディアグループ取得
-Route::get('/get/mediagroup', function() { return response()->json(['responseData' => MediaGroup::latest()->get()], 200);});
+Route::get('/get/mediagroup', function() { return response()->json([ 'responseData' => MediaGroup::latest()->get() ], 200);});
 // メディア取得
-Route::get('/get/media', function() { return response()->json(['responseData' => Media::latest()->get()], 200);});
+Route::get('/get/media', function() { return response()->json([ 'responseData' => Media::latest()->get() ], 200);});
+// メディア条件取得
+Route::get('/get/media/focus', function() { return response()->json([ 'responseData' => Media::orderBy('created_at', 'desc')->take(10)->get() ], 200);});
 // メディアグループ作成
 Route::post('/post/mediagroup/create', [MediaController::class, 'makeNewMediaGroup']);
 // メディアグループ更新

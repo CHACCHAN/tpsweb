@@ -9,6 +9,7 @@
     })
     const laravelVersion = ref(null)
     const phpVersion = ref(null)
+    const emailAddress = ref(null)
     const isShow = ref(true)
     const isInputEmailSubject = ref()
     const isInputEmailContent = ref()
@@ -22,6 +23,10 @@
     const isPickUpClickedID = ref(null)
     const isPickUpClickedTitle = ref(null)
     const isPickUpClickedContent = ref(null)
+    const isContactEmail = ref(null)
+    const isContactSubject = ref(null)
+    const isContactContent = ref(null)
+    const isContactDisabled = ref(false)
     const isDiscordInputPostWebhook = ref(null)
     const isDiscordInputPostContent = ref(null)
     const isDiscordCheckPostAutoMode = ref(null)
@@ -31,6 +36,8 @@
     const isDiscordCheckMediaAutoMode = ref(null)
     const isDiscordCheckMediaNotifical = ref(null)
     const isDiscordCheckMediaImage = ref(null)
+    const isDiscordCheckContactAutoMode = ref(null)
+    const isDiscordInputContactWebhook = ref(null)
     const isDiscordInputContent = ref(null)
     const isDiscordOnCookieWebhook = ref(null)
     const isDiscordLoading = ref(false)
@@ -39,6 +46,7 @@
     onMounted(() => {
         getLaravelVersion()
         getPHPVersion()
+        getEmail()
         getDiscord()
         changeResponsive()
         getPickUpSubCount()
@@ -81,7 +89,7 @@
 
         if(isInputEmailSubject.value && isInputEmailContent.value) {
             isInputEmailDisabled.value = true
-            EmailPostSubmit.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>   配信中...'
+            EmailPostSubmit.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>   配信中'
 
             fetch('/tps-site/email/post', {
                 method: 'POST',
@@ -112,6 +120,17 @@
             isInputEmailSubject.value = ""
             isInputEmailContent.value = ""
         }
+    }
+
+    const getEmail = () => {
+        fetch('/tps-site/get/env/email')
+        .then((response) => response.json())
+        .then(res => {
+            emailAddress.value = res.responseData
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
 
     const getLaravelVersion = () => {
@@ -279,12 +298,56 @@
         })
     }
 
+    // Contact
+    const createContact = () => {
+        let ContactSubmit = document.getElementById('ContactSubmit')
+        let beforeText = ContactSubmit.innerHTML
+
+        if(isContactEmail.value && isContactSubject.value && isContactContent.value) {
+            const ContactEmail = isContactEmail.value
+            const ContactSubject = isContactSubject.value
+            const ContactContent = isContactContent.value
+            ContactSubmit.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>   送信中'
+            isContactDisabled.value = true
+
+            fetch('/tps-site/post/contact/send', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: ContactEmail,
+                    subject: ContactSubject,
+                    content: ContactContent,
+                }),
+            })
+            .then((response) => response.json())
+            .then(res => {
+                ContactSubmit.innerHTML = beforeText
+                isContactDisabled.value = false
+                isContactEmail.value = ''
+                isContactSubject.value = ''
+                isContactContent.value = ''
+                if(res.responseData) {
+                    isNotificalText.value = '正常に送信されました'
+                } else {
+                    isNotificalText.value = '送信に失敗しました'
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
+    }
+
     // Discord
     const getDiscord = async() => {
         const getDiscordPostPromise = getDiscordPost()
         const getDiscordMediaPromise = getDiscordMedia()
+        const getDiscordContactPromise = getDiscordContact()
         
-        await Promise.all([getDiscordPostPromise, getDiscordMediaPromise])
+        await Promise.all([getDiscordPostPromise, getDiscordMediaPromise, getDiscordContactPromise])
 
         isDiscordLoading.value = true
     }
@@ -317,6 +380,22 @@
                 isDiscordInputMediaContent.value = res.responseData.content
                 isDiscordCheckMediaImage.value = Boolean(res.responseData.paste_image)
                 isDiscordInputMediaWebhook.value = res.responseData.webhook
+                resolve()
+            })
+            .catch(error => {
+                console.log(error)
+                reject(error)
+            })
+        })
+    }
+
+    const getDiscordContact = () => {
+        return new Promise((resolve, reject) => {
+            fetch('/tps-site/get/discord/contact')
+            .then((response) => response.json())
+            .then(res => {
+                isDiscordCheckContactAutoMode.value = Boolean(res.responseData.auto_mode)
+                isDiscordInputContactWebhook.value = res.responseData.webhook
                 resolve()
             })
             .catch(error => {
@@ -385,6 +464,34 @@
                 isNotificalText.value = 'メディア投稿の設定を更新しました'
             } else {
                 isNotificalText.value = 'メディア投稿の設定を更新できませんでした'
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
+    const updateDiscordContact = () => {
+        const DiscordCheckContactAutoMode = isDiscordCheckContactAutoMode.value
+        const DiscordInputContactWebhook = isDiscordInputContactWebhook.value
+
+        fetch('/tps-site/post/discord/contact', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                auto_mode: DiscordCheckContactAutoMode,
+                webhook: DiscordInputContactWebhook
+            }),
+        })
+        .then((response) => response.json())
+        .then(res => {
+            if(res.responseData) {
+                isNotificalText.value = '問い合わせ転送の設定を更新しました'
+            } else {
+                isNotificalText.value = '問い合わせ転送の設定を更新できませんでした'
             }
         })
         .catch(error => {
@@ -552,6 +659,33 @@
                             </div>
                             <!-- 自動通知設定 -->
                             <div class="fs-6 text-success fw-bold">自動通知機能の設定</div>
+                            <!-- 問い合わせ転送設定 -->
+                            <div class="mb-3">
+                                <div class="text-secondary">問い合わせ転送の設定</div>
+                                <!-- Webhook -->
+                                <div class="form-floating">
+                                    <input
+                                        type="text" 
+                                        class="form-control border-success border-2" 
+                                        id="inputDiscordContactWebhook" 
+                                        placeholder="Leave a comment here" 
+                                        rows="1"
+                                        cols="1"
+                                        v-model="isDiscordInputContactWebhook" 
+                                        @change="updateDiscordContact()" />
+                                    <label for="inputDiscordContactWebhook">Webhook</label>
+                                    <div class="form-text text-success">管理者アカウントに一斉転送されます</div>
+                                </div>
+                                <!-- チェックボックス -->
+                                <div class="d-flex">
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input" type="checkbox" v-model="isDiscordCheckContactAutoMode" @change="updateDiscordContact()" id="flexCheckDiscordContactAutoMode">
+                                        <label class="form-check-label" for="flexCheckDiscordContactAutoMode">
+                                            自動化
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- 投稿設定 -->
                             <div class="mb-3">
                                 <div class="text-secondary">投稿の設定</div>
@@ -712,6 +846,75 @@
                         </div>
                     </div>
                 </div>
+                <!-- 問い合わせ -->
+                <div class="card mb-3">
+                    <div class="card-header bg-light d-flex align-items-center justify-content-start" data-bs-toggle="collapse" data-bs-target="#ContactCollapse" aria-expanded="true" aria-controls="EmailCollapse">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"/>
+                        </svg>
+                        <div class="h4 m-0 ms-2">問い合わせ</div>
+                    </div>
+                    <div class="collapse" :class="{ 'show': isShow }" id="ContactCollapse">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="contactEmail" class="form-label fw-bold">Email</label>
+                                <input type="email" class="form-control" id="contactEmail" v-model="isContactEmail">
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactSubject" class="form-label fw-bold">Subject</label>
+                                <input type="text" class="form-control" id="contactSubject" v-model="isContactSubject">
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactContent" class="form-label fw-bold">Content</label>
+                                <textarea 
+                                    class="form-control" 
+                                    id="contactContent" 
+                                    style="height: 44px; resize: none; overflow: hidden;"
+                                    v-model="isContactContent" 
+                                    placeholder="入力してください"
+                                    @input="autoResizeHeightTextarea">
+                                </textarea>
+                                <div class="form-text" v-text="'※' + emailAddress + 'から送信されます'"></div>
+                            </div>
+                            <div class="text-end">
+                                <button 
+                                    type="button" 
+                                    id="ContactSubmit" 
+                                    class="btn btn-success text-light py-1 rounded-pill" 
+                                    :disabled="isContactDisabled"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#contactCheckModal" 
+                                    v-if="isContactEmail && isContactSubject && isContactContent"
+                                    >配信する
+                                </button>
+                                <button type="button" id="ContactSubmit" class="btn btn-success text-light py-1 rounded-pill" v-else>配信する</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- メール配信確認モーダル -->
+                    <div class="modal" id="contactCheckModal" tabindex="-1" aria-labelledby="contactCheckModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content text-bg-dark border">
+                                <div class="modal-header border-0">
+                                    <h5 class="modal-title text-truncate fw-bold" id="contactCheckModalLabel" v-text="isContactEmail + '宛に送信します'"></h5>
+                                </div>
+                                <div class="modal-body pt-0">
+                                    <div class="d-flex align-items-center justify-content-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-envelope-check-fill" viewBox="0 0 16 16">
+                                            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586l-1.239-.757ZM16 4.697v4.974A4.491 4.491 0 0 0 12.5 8a4.49 4.49 0 0 0-1.965.45l-.338-.207L16 4.697Z"/>
+                                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"/>
+                                        </svg>
+                                        <div class="fs-5 ms-2">続行しますか?</div>
+                                    </div>
+                                    <div class="text-secondary mt-1">内容に問題なければ続行してください</div>
+                                    <div class="text-end mt-5">
+                                        <button type="button" class="btn btn-success rounded-pill" @click="createContact()" data-bs-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- TPS Web ピックアップ -->
                 <div class="card mb-3">
                     <div class="card-header bg-light d-flex align-items-center justify-content-start" data-bs-toggle="collapse" data-bs-target="#NewsCollapse" aria-expanded="true" aria-controls="NewsCollapse">
@@ -755,12 +958,7 @@
                                         <th class="col-3">時間</th>
                                     </tr>
                                 </thead>
-                                <div class="text-center mt-3" v-if="!isPickUpLists[0]">
-                                    <div class="spinner-border" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                                <tbody v-if="isPickUpLists[0]">
+                                <tbody>
                                     <tr class="row" 
                                         v-for="isPickUpList in isPickUpLists" 
                                         :key="isPickUpList.id" 
@@ -826,7 +1024,7 @@
                             <button type="button" id="clickItem" class="btn border-0 rounded-pill py-1" @click="getPickUp">続きを読み込む</button>
                         </div>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
     </div>

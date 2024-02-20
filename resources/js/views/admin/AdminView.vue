@@ -6,6 +6,8 @@
     import ReleaseComponent from '../../components/admin/ReleaseComponent.vue'
     import PostingComponent from '../../components/admin/PostingComponent.vue'
     import MediaComponent from '../../components/admin/MediaComponent.vue'
+    import DesignComponent from '../../components/admin/DesignComponent.vue'
+    import UserComponent from '../../components/admin/UserComponent.vue'
 
     const isIconImage = location.protocol + '//' + location.host + '/tps-site/images/components/IconImage.png'
     const router = useRouter()
@@ -104,11 +106,45 @@
             </div>
             <!-- モバイル用メニュー -->
             <div class="col-12 d-block d-md-none bg-secondary text-light">
-                <button type="button" class="btn border-0 p-0">
+                <button type="button" class="btn border-0 p-0" data-bs-toggle="offcanvas" data-bs-target="#MobileOffcanvas" aria-controls="MobileOffcanvas">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
                     </svg>   MENU
                 </button>
+
+                <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="MobileOffcanvas" aria-labelledby="MobileOffcanvasLabel" style="width: 200px;">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="MobileOffcanvasLabel">メニュー</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body p-0">
+                        <button type="button" class="btn rounded-0 border-0 text-light text-start dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#collapseDashBoardMobile" aria-expanded="true" aria-controls="collapseDashBoard">
+                            ダッシュボードメニュー
+                        </button>
+                        <div class="collapse" id="collapseDashBoardMobile">
+                            <div class="mb-3 text-bg-secondary">
+                                <a href="#view=ホーム" id="clickItem" class="btn border-0 rounded-0 text-start w-100" :class="{ 'clicked': isSelectWeb[0] }" @click="selectWeb(0); changeTitle('ホーム');">ホーム</a>
+                                <a href="#view=更新" id="clickItem" class="btn border-0 rounded-0 text-start w-100" :class="{ 'clicked': isSelectWeb[1] }" @click="selectWeb(1); changeTitle('更新');">更新</a>
+                            </div>
+                        </div>
+                        <!-- 登録メニュー -->
+                        <div class="my-3">
+                            <div v-for="webMenu in webMenus" :key="webMenu">
+                                <a :href="'#view=' + webMenu.menuTitle" id="clickMenuItem" class="list-group-item text-bg-dark border-0 rounded-3 p-1 ps-3 mb-2 mx-5" :class="{ 'clicked': isSelectWeb[webMenu.id] }" @click="selectWeb(webMenu.id); changeTitle(webMenu.menuTitle);">
+                                    <div v-html="webMenu.menuIcon + '&emsp;' + webMenu.menuTitle"></div>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- 設定メニュー -->
+                        <div class="mb-3">
+                            <div v-for="webSetting in webSettings" :key="webSetting">
+                                <a :href="'#view=' + webSetting.settingTitle" id="clickMenuItem" class="list-group-item text-bg-dark border-0 rounded-3 p-1 ps-3 mb-2 mx-5" :class="{ 'clicked': isSelectWeb[webSetting.id] }" @click="selectWeb(webSetting.id); changeTitle(webSetting.settingTitle);">
+                                    <div v-html="webSetting.settingIcon + '&emsp;' + webSetting.settingTitle"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- PC用左メニュー -->
             <div class="d-none d-md-block col-2 pe-0 bg-dark" style="height: 100vh;">
@@ -154,6 +190,8 @@
                 <ReleaseComponent v-if="isSelectWeb[1]" />
                 <PostingComponent v-if="isSelectWeb[2]" />
                 <MediaComponent v-if="isSelectWeb[3]" />
+                <DesignComponent v-if="isSelectWeb[4]" />
+                <UserComponent v-if="isSelectWeb[5]" />
             </div>
         </div>
     </div>
