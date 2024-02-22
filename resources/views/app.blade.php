@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>TPS</title>
     @vite('resources/sass/app.scss')
+    <link rel="icon" href="{{ asset('images/components/favicon.png') }}" sizes="32x32">
     {{-- フォント --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
