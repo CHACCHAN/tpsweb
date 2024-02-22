@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, onMounted, onUpdated } from 'vue'
+    import { ref, onMounted, onUpdated, onUnmounted } from 'vue'
     import { useRouter } from 'vue-router'
     import LoadingComponent from '../LoadingComponent.vue'
 
@@ -19,11 +19,7 @@
         window.addEventListener('resize', changeResponsive)
         changeResponsive()
         ChangePasswordInput()
-        document.addEventListener('keypress', (e) => {
-            if(e.key === 'Enter' && !submitButton.value) {
-                Login()
-            }
-        })
+        document.addEventListener('keypress', handleEnterKeyPress)
     })
 
     onUpdated(() => {
@@ -35,6 +31,12 @@
             submitButton.value = true
         }
     })
+
+    const handleEnterKeyPress = (e) => {
+        if(e.key === 'Enter' && !submitButton.value) {
+            Login()
+        }
+    }
 
     const changeResponsive = () => {
         if(window.screen.width <= 768) {
@@ -75,7 +77,7 @@
         .then(res => {
             document.querySelector('meta[name="csrf-token"]').content = res.csrf
             if(res.check && res.responseData) {
-                router.push({ name: 'home' })
+                router.go({ name: 'home' })
             } else if(res.check && !res.responseData) {
                 userFocusBanData.value = new Array()
                 userFocusBanData.value = res.user_ban_list
