@@ -25,7 +25,7 @@
             role: '副部長',
             name: 'NEO(18)',
             comment: '早慶以下はFランですwww<br>ちなみに私は愛知大学です。',
-            image: 'https://cdn.discordapp.com/avatars/741176758472015922/5fee77a050899c7d102eee8042035e2b.webp?size=128',
+            image: 'https://cdn.discordapp.com/avatars/741176758472015922/b871cbf9151d23f1bd949236853184ff.webp?size=128',
         },
         {
             role: '開発者',
