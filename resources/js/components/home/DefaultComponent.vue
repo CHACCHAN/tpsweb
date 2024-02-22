@@ -32,17 +32,17 @@
                         />
                     </video>
                     <div class="carousel-caption d-none d-md-block">
-                        <div class="h3 fw-bold" v-text="'aaa'"></div>
+                        <div class="h3 fw-bold" v-text="'ドイツ&ソ連'"></div>
                     </div>
                     <div class="position-absolute w-100" style="top: 20%;">
                         <!-- PC -->
                         <div class="h1 text-light fw-bold mb-0 ms-5 d-none d-md-block fadeIn" style="font-size: 100px;">Shot on TPS</div>
                         <p class="h1 text-light fw-bold ms-5 d-none d-md-block fadeIn">World of Tanks Blitz 写真集をもっと</p>
-                        <p class="h1 fw-bold ms-5 d-none d-md-block" v-text="'- 映像を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
+                        <p class="h1 fw-bold ms-5 d-none d-md-block" v-text="'- ドイツ&ソ連を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
                         <!-- MOBILE -->
                         <div class="h1 text-light text-center fw-bold mb-0 d-block d-md-none fadeIn" style="font-size: 60px;">Shot on TPS</div>
                         <p class="h3 text-light text-center fw-bold d-block d-md-none fadeIn">World of Tanks Blitz 写真集をもっと</p>
-                        <p class="h1 fw-bold ms-5 d-block d-md-none" v-text="'- 映像を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
+                        <p class="h1 fw-bold ms-5 d-block d-md-none" v-text="'- ドイツ&ソ連を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
                     </div>
                 </div>
                 <!-- 2 -->
@@ -54,17 +54,17 @@
                         />
                     </video>
                     <div class="carousel-caption d-none d-md-block">
-                        <div class="h3 fw-bold" v-text="'aaa'"></div>
+                        <div class="h3 fw-bold" v-text="'ShPTK-TVP 100'"></div>
                     </div>
                     <div class="position-absolute w-100" style="top: 20%;">
                         <!-- PC -->
                         <div class="h1 text-light fw-bold mb-0 ms-5 d-none d-md-block fadeIn" style="font-size: 100px;">Shot on TPS</div>
                         <p class="h1 text-light fw-bold ms-5 d-none d-md-block fadeIn">World of Tanks Blitz 写真集をもっと</p>
-                        <p class="h1 fw-bold ms-5 d-none d-md-block" v-text="'- 映像を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
+                        <p class="h1 fw-bold ms-5 d-none d-md-block" v-text="'- ShPTK-TVP 100を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
                         <!-- MOBILE -->
                         <div class="h1 text-light text-center fw-bold mb-0 d-block d-md-none fadeIn" style="font-size: 60px;">Shot on TPS</div>
                         <p class="h3 text-light text-center fw-bold d-block d-md-none fadeIn">World of Tanks Blitz 写真集をもっと</p>
-                        <p class="h1 fw-bold ms-5 d-block d-md-none" v-text="'- 映像を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
+                        <p class="h1 fw-bold ms-5 d-block d-md-none" v-text="'- ShPTK-TVP 100を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
                     </div>
                 </div>
                 <!-- 3 -->
@@ -76,17 +76,17 @@
                         />
                     </video>
                     <div class="carousel-caption d-none d-md-block">
-                        <div class="h3 fw-bold" v-text="'aaa'"></div>
+                        <div class="h3 fw-bold" v-text="'Caliban'"></div>
                     </div>
                     <div class="position-absolute w-100" style="top: 20%;">
                         <!-- PC -->
                         <div class="h1 text-light fw-bold mb-0 ms-5 d-none d-md-block fadeIn" style="font-size: 100px;">Shot on TPS</div>
                         <p class="h1 text-light fw-bold ms-5 d-none d-md-block fadeIn">World of Tanks Blitz 写真集をもっと</p>
-                        <p class="h1 fw-bold ms-5 d-none d-md-block" v-text="'- 映像を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
+                        <p class="h1 fw-bold ms-5 d-none d-md-block" v-text="'- Calibanを表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
                         <!-- MOBILE -->
                         <div class="h1 text-light text-center fw-bold mb-0 d-block d-md-none fadeIn" style="font-size: 60px;">Shot on TPS</div>
                         <p class="h3 text-light text-center fw-bold d-block d-md-none fadeIn">World of Tanks Blitz 写真集をもっと</p>
-                        <p class="h1 fw-bold ms-5 d-block d-md-none" v-text="'- 映像を表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
+                        <p class="h1 fw-bold ms-5 d-block d-md-none" v-text="'- Calibanを表示中'" style="color: rgba(245, 106, 106, 0.808);"></p>
                     </div>
                 </div>
             </div>

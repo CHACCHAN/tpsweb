@@ -56,6 +56,7 @@
             })
             .catch(error => {
                 console.log(error)
+                isLoading.value = false
                 reject(error)
             })
         })

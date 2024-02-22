@@ -60,7 +60,7 @@
     function Login() {
         isLoading.value = true
 
-        fetch('', {
+        fetch('/tps-site/auth/login', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -99,13 +99,13 @@
 
 <template>
     <LoadingComponent v-if="isLoading" />
-    <div class="mb-3">
-        <label for="Email" class="form-label m-0">メールアドレス</label>
-        <input type="email" id="Email" class="form-control text-bg-dark border-secondary" v-model="isInputedEmail">
+    <div class="form-floating text-dark mb-3">
+        <input type="email" class="form-control border-0" id="Email" placeholder="name@example.com" v-model="isInputedEmail" />
+        <label for="Email">メールアドレス</label>
     </div>
-    <div class="mb-3">
-        <label for="Password" class="form-label m-0">パスワード</label>
-        <input type="password" id="Password" class="form-control text-bg-dark border-secondary" v-model="isInputedPassword">
+    <div class="form-floating text-dark mb-3">
+        <input type="password" class="form-control border-0" id="Password" placeholder="Password" v-model="isInputedPassword">
+        <label for="Password">パスワード</label>
         <div class="form-text text-danger text-start" v-show="isCheckedForm">メールアドレスまたはパスワードが不明です</div>
         <button type="button" id="clickItem" class="form-text text-secondary btn p-1 border-0" @click="ChangePasswordInput()" v-text="isClickedText"></button>
     </div>
@@ -113,9 +113,7 @@
         <div class="text-center">
             <button type="button" class="btn btn-primary rounded-pill w-100" @click="Login()" :disabled="submitButton">ログイン</button>
             <div class="d-flex align-items-center justify-content-center mt-1">
-                <button type="button" class="btn text-primary text-truncate border-0 p-0">登録情報を忘れた方</button>
-                <div class="vr mx-2 my-1"></div>
-                <a href="/tps-site/auth/register" class="btn text-light text-truncate border-0 p-0">新規登録</a>
+                <a href="/tps-site/auth/register" class="btn text-secondary text-truncate border-0 p-0">新規登録</a>
             </div>
         </div>
     </div>

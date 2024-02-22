@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use App\Mail\TokenEmail;
 use App\Models\User;
 use App\Models\UserBanList;
@@ -116,7 +117,7 @@ class UserController extends Controller
         }
     }
 
-    // 確認メール
+    // 確認メール(登録用)
     public function emailAuther(Request $request)
     {
         if(!User::where('email', $request->email)->exists())
@@ -132,6 +133,18 @@ class UserController extends Controller
         return response()->json([
             'emailCheck' => $emailCheck,
         ], 200);
+    }
+
+    // 確認メール(確認用)
+    public function emailAutherCheck(Request $request)
+    {
+        try {
+            Mail::send(new TokenEmail($request->subject, $request->email, $request->onetime_token));
+
+            return response()->json([ 'responseData' => true ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
     }
 
     // ユーザ更新
@@ -215,6 +228,63 @@ class UserController extends Controller
         return response()->json([
             'check' => $check,
         ], 200);
+    }
+
+    // アバター変更
+    public function changeAvatar(Request $request)
+    {
+        try {
+            do {
+                $image_path = Str::random(10) . '.png';
+            } while(User::where('avatar', $image_path)->exists());
+            $image = base64_decode(preg_replace('/^data:image.*base64,/', '', str_replace(' ', '+', $request->image)));
+
+            if(User::where('id', Auth::id())->exists()) {
+                Storage::disk('public')->delete('user/avatar/' . Auth::user()->avatar);
+            }
+
+            Storage::put('public/user/avatar/' . $image_path, $image);
+            User::where('id', Auth::id())->update([
+                'avatar' => $image_path
+            ]);
+
+            return response()->json([ 'responseData' => true ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
+    }
+
+    // メールアドレス変更
+    public function changeMailAddress(Request $request)
+    {
+        try {
+            if(User::where('email', $request->email)->exists()) {
+                $checkMail = false;
+            } else {
+                User::where('id', Auth::id())->update([
+                    'email' => $request->email,
+                ]);
+                $checkMail = true;
+            }
+
+            return response()->json([ 'responseData' => true, 'checkMail' => $checkMail ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
+    }
+
+    // パスワード変更
+    public function changePassword(Request $request)
+    {
+        try {
+            User::where('id', Auth::id())->update([
+                'password' => Hash::make($request->password)
+            ]);
+
+            return response()->json([ 'responseData' => true ], 200);
+        } catch(\Exception $e) {
+            return response()->json([ 'responseData' => false ], 500);
+        }
     }
 
     // ユーザ検索

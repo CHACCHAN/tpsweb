@@ -37,10 +37,18 @@ use GuzzleHttp\Psr7\Query;
 |
 */
 // Auth
-// メール認証
+// メール認証(登録用)
 Route::post('/auth/register', [UserController::class, 'emailAuther']);
+// メール認証(確認用)
+Route::post('/auth/mailcheck', [UserController::class, 'emailAutherCheck']);
 // 新規登録
 Route::post('/auth/register/create', [UserController::class, 'register']);
+// アバター変更
+Route::post('/auth/change/avatar', [UserController::class, 'changeAvatar']);
+// メールアドレス変更
+Route::post('/auth/change/mailaddress', [UserController::class, 'changeMailAddress']);
+// パスワード変更
+Route::post('/auth/change/password', [UserController::class, 'changePassword']);
 // 更新
 Route::post('/auth/update', [UserController::class, 'updateUser']);
 // ログイン

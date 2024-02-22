@@ -348,13 +348,13 @@
                 </div>
                 <!-- Mobile -->
                 <div class="d-block d-md-none">
-                    <img src="https://picsum.photos/1920/1080" class="rounded-5 w-100 mb-3 content" loading="lazy" />
+                    <img :src="'/tps-site/images/components/WotbCollection.jpg'" class="rounded-5 w-100 mb-3 content" loading="lazy" />
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <!-- PC -->
                 <div class="d-none d-md-block">
-                    <img src="https://picsum.photos/1920/1080" class="rounded-5 w-100 content" loading="lazy" />
+                    <img :src="'/tps-site/images/components/WotbCollection.jpg'" class="rounded-5 w-100 content" loading="lazy" />
                 </div>
                 <!-- Mobile -->
                 <div class="d-block d-md-none">

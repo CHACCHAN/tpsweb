@@ -188,6 +188,34 @@
                                         <div class="fw-bold ms-3">ニュース</div>
                                     </router-link>
                                     <hr>
+                                    <!-- アカウント -->
+                                    <div v-if="props.LoginFlag">
+                                        <router-link :to="{ name: 'profile' }" id="clickItem" class="btn border-0 d-flex align-items-center justify-content-start text-light w-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill-check" viewBox="0 0 16 16">
+                                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                                <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z"/>
+                                            </svg>
+                                            <div class="fw-bold ms-3">プロフィール</div>
+                                        </router-link>
+                                        <a href="/tps-site/auth/logout" id="clickItem" class="btn border-0 d-flex align-items-center justify-content-start text-light w-100" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill-down" viewBox="0 0 16 16">
+                                                <path d="M12.5 9a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Zm.354 5.854 1.5-1.5a.5.5 0 0 0-.708-.708l-.646.647V10.5a.5.5 0 0 0-1 0v2.793l-.646-.647a.5.5 0 0 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                                <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z"/>
+                                            </svg>
+                                            <div class="fw-bold ms-3">ログアウト</div>
+                                        </a>
+                                        <hr>
+                                    </div>
+                                    <div v-else>
+                                        <router-link :to="{ name: 'login' }" id="clickItem" class="btn border-0 d-flex align-items-center justify-content-start text-light w-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                            </svg>
+                                        <div class="fw-bold ms-3">ログイン</div>
+                                        </router-link>
+                                        <hr>
+                                    </div>
                                     <!-- その他 -->
                                     <a href="https://twitter.com/wotb_fhoto_club?s=11&t=Ygi1_rZPT9AE-XmPDkbmRQ" id="clickItem" class="btn border-0 d-flex align-items-center justify-content-start text-light w-100" target="_blank">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
@@ -217,7 +245,7 @@
                                     <hr>
                                     <router-link :to="{ name: 'licence' }" class="text-decoration-none text-secondary">利用規約</router-link><br>
                                     <router-link :to="{ name: 'privacy_policy' }" class="text-decoration-none text-secondary">プライバシーポリシー</router-link>
-                                    <div class="text-secondary mt-3">© {{ nowYear + ' ' +APP_NAME }}</div>
+                                    <div class="text-secondary mt-3">© {{ nowYear + ' ' + APP_NAME }}</div>
                                 </div>
                             </div>
 
@@ -255,12 +283,12 @@
                             </div>
                             <div id="menuItem" class="d-none d-md-block">
                                 <a 
-                                    href="https://twitter.com/wotb_fhoto_club?s=11&t=Ygi1_rZPT9AE-XmPDkbmRQ" 
+                                    href="https://discord.gg/8BWqNzDZP2" 
                                     id="clickItemHyper" 
                                     class="btn border-0 text-light rounded-pill ms-2" 
                                     style="text-shadow: 0 0 5px black;"
                                     target="_blank"
-                                    >X (TWITTER)
+                                    >DISCORD
                                 </a>
                             </div>
                         </div>
@@ -319,13 +347,6 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12 mt-5" v-if="isLoading">
-                                            <div class="text-center text-light">
-                                                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="col-4 mb-2" v-for="isPostCategory in isPostCategorys" :key="isPostCategory.id">
                                             <div class="rounded-3 p-3 bg-light" v-if="!isLoading">
                                                 <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4 text-truncate" v-text="isPostCategory.category"></div>
@@ -372,13 +393,6 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12 mt-5" v-if="isLoading">
-                                            <div class="text-center text-light">
-                                                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="col-4 mb-2" v-for="isMediaGroup in isMediaGroups" :key="isMediaGroup.id">
                                             <div class="rounded-3 p-3 bg-light" v-if="!isLoading">
                                                 <div class="h5 fw-bold border-2 border-bottom pb-4 mb-4 text-truncate" v-text="isMediaGroup.name"></div>
@@ -426,25 +440,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <!-- モバイル用 下部メニュー -->
-            <div class="position-fixed bottom-0 d-block d-md-none z-3 w-100" v-if="isBackGradient && !movedToTheBottom">
-                <div class="position-relative w-100">
-                    <div class="bg-dark text-light rounded-pill border m-2 p-2 px-4">
-                        <div class="mx-4">
-                            <!-- メニュー -->
-                            <router-link :to="{ name: 'home' }" class="btn border-0 text-light p-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
-                                    <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
-                                </svg>
-                                <div style="font-size:8px;">HOME</div>
-                            </router-link>
                         </div>
                     </div>
                 </div>

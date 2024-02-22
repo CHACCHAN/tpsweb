@@ -106,6 +106,7 @@
             })
             .catch(error => {
                 console.log(error)
+                isLoading.value = false
                 reject(error)
             })
         })
@@ -121,6 +122,7 @@
             })
             .catch(error => {
                 console.log(error)
+                isLoading.value = false
                 reject(error)
             })
         })
@@ -181,7 +183,8 @@
                                     router.push('image/' + isMediaGroup.name),
                                     documentTitle = isMediaGroup.name,
                                     getFilterMedia(isMediaGroup.id)
-                                ">
+                                "
+                        >
                             <img 
                                 :src="'/tps-site/storage/media/groupImage/' + isMediaGroup.image" 
                                 class="rounded-3" 
